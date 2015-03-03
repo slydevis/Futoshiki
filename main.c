@@ -18,7 +18,8 @@
 
 int gridSize = 0;
 
-char grid[MAX_SIZE][MAX_SIZE];
+char grid[MAX_SIZE * MAX_SIZE];
+char gridBis[MAX_SIZE][MAX_SIZE];
 
 /* Initialise les données de la grille */
 void gridLineManager(char* line, int nbLine) {
@@ -26,7 +27,7 @@ void gridLineManager(char* line, int nbLine) {
     for(int i = 0; i < (int)strlen(line); ++i)
     {
         if(line[i] != ' ' && line[i] != '\0' && line[i] != '\n') {
-            grid[nbLine][cpt] = line[i];
+            gridBis[nbLine][cpt] = line[i];
             cpt++;
         }
     }
@@ -61,7 +62,7 @@ void printGrid() {
         printf("\n");
 
         for(int j = 0; j < gridSize; ++j)
-                printf("%5c", grid[i][j]);
+                printf("%5c", gridBis[i][j]);
     }
 }
 
@@ -75,20 +76,154 @@ int resolveFutoshiki() {
     return -1;
 }
 
-int checkFutushiki() {
+void initTest1() {
+    // Initialisation de la première ligne
+    for(int i = 0; i < gridSize; ++i)
+        grid[i] = '0' + i;
 
-    // On regarde la ligne
+    // Initialisation de la première colonne
+    for(int i = gridSize - 1; i < 2*gridSize; ++i)
+        grid[i] = '0' + i;
 
-    // TODO : Mettre que les valeurs des cases
-    
-    for(int i = 0; i < gridSize; ++i) {
-        for(int j = 0; j < gridSize; ++j) {
-            printf("%d = %c\n", (int)grid[i][j], grid[i][j]);
-        }
-    }
-    return 1;
+    for(int i = 2*gridSize - 1; i < 3*gridSize; ++i)
+        grid[i] = '0' + i;
+
+    for(int i = 3*gridSize - 1; i < 4*gridSize; ++i)
+        grid[i] = '0' + i;
+
 }
 
+void initTest2() {
+    // Initialisation de la première ligne
+    for(int i = 0; i < gridSize; ++i)
+        grid[i] = '0' + i;
+
+    // Initialisation de la première colonne
+    for(int i = gridSize - 1; i < 2*gridSize; ++i)
+        grid[i] = '0' + i;
+
+    for(int i = 2*gridSize - 1; i < 3*gridSize; ++i)
+        grid[i] = '0' + i;
+
+    for(int i = 3*gridSize - 1; i < 4*gridSize; ++i)
+        grid[i] = '0' + i;
+
+    grid[3] = '0' + 4;
+}
+
+void initTest3() {
+    // Initialisation de la première ligne
+    for(int i = 0; i < gridSize; ++i)
+        grid[i] = '0' + i;
+
+    // Initialisation de la première colonne
+    for(int i = gridSize - 1; i < 2*gridSize; ++i)
+        grid[i] = '0' + i;
+
+    for(int i = 2*gridSize - 1; i < 3*gridSize; ++i)
+        grid[i] = '0' + i;
+
+    for(int i = 3*gridSize - 1; i < 4*gridSize; ++i)
+        grid[i] = '0' + i;
+
+    grid[gridSize+3] = '0' + 4;
+}
+
+void initTest4() {
+    // Initialisation de la première ligne
+    for(int i = 0; i < gridSize; ++i)
+        grid[i] = '0' + i;
+
+    // Initialisation de la première colonne
+    for(int i = gridSize - 1; i < 2*gridSize; ++i)
+        grid[i] = '0' + i;
+
+    for(int i = 2*gridSize - 1; i < 3*gridSize; ++i)
+        grid[i] = '0' + i;
+
+    for(int i = 3*gridSize - 1; i < 4*gridSize; ++i)
+        grid[i] = '0' + i;
+
+
+    grid[3*gridSize+2] = '0' + 2;
+}
+
+void initTest5() {
+    // Initialisation de la première ligne
+    for(int i = 0; i < gridSize; ++i)
+        grid[i] = '0' + i;
+
+    // Initialisation de la première colonne
+    for(int i = gridSize - 1; i < 2*gridSize; ++i)
+        grid[i] = '0' + i;
+
+    for(int i = 2*gridSize - 1; i < 3*gridSize; ++i)
+        grid[i] = '0' + i;
+
+    for(int i = 3*gridSize - 1; i < 4*gridSize; ++i)
+        grid[i] = '0' + i;
+
+    grid[3*gridSize+1] = '0' + 2;
+}
+
+
+void initTest6() {
+    for(int i = 0; i < gridSize; ++i)
+        grid[i] = '0' + i;
+
+    for(int i = gridSize - 1; i < 2*gridSize; ++i)
+        grid[i] = '0' + i;
+
+    for(int i = 2*gridSize - 1; i < 3*gridSize; ++i)
+        grid[i] = '0' + i;
+
+    for(int i = 3*gridSize - 1; i < 4*gridSize; ++i)
+        grid[i] = '0' + i;
+
+
+    grid[3*gridSize+1] = '0' + 2;
+    grid[3*gridSize] = '0' + 2;
+}
+
+int checkFutushiki() {
+    int nbColCheck = 1;
+    for(int i = 0; i < gridSize*4 - 1; ++i) {
+        for(int j = nbColCheck * gridSize - 1; j > 0; --j) {
+            if (i != j && (j - 1)%4 == i%4 && grid[i] == grid[j]) {
+                return 1;
+            }
+            
+            // Inutile maintenant à voir si d'autre bug apparait
+            /*
+            if(i == j%nbColCheck && grid[i] == grid[j + gridSize * nbColCheck])
+                return 1;
+            */
+        }
+        nbColCheck++;
+    }
+
+    return 0;
+}
+
+void runTest(int (*f)(), void (*init)(), int result) {
+
+    (*init)();
+    int r = (*f)();
+
+    printf("Run Test : ");
+
+    if(r == result) {
+        color(COLOR_GREEN);
+        printf("OK\n");
+        color(COLOR_WHITE);
+    }
+    else {
+        color(COLOR_RED);
+        printf("Fail\n");
+        color(COLOR_WHITE);
+        exit(-1);
+    }
+}
 /* Ne plus toucher à cette fonction */
 int main(int argc, char* argv[]) {
 
@@ -131,7 +266,12 @@ int main(int argc, char* argv[]) {
 
     printf("\n");
 
-    int check = checkFutushiki();
-    printf("%d\n", check);
+    runTest(checkFutushiki, initTest1, 0);
+    runTest(checkFutushiki, initTest2, 1);
+    runTest(checkFutushiki, initTest3, 0);
+    runTest(checkFutushiki, initTest4, 1);
+    runTest(checkFutushiki, initTest5, 0);
+    runTest(checkFutushiki, initTest6, 1);
+
     return 0;
 }
