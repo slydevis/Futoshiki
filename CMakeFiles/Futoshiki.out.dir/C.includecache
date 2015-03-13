@@ -6,11 +6,25 @@
 
 #IncludeRegexTransform: 
 
-/home/guillaume/Documents/Fac/IA/Futoshiki/main.c
+/home/guillaume/Documents/Futoshiki/constraint.h
+util.h
+/home/guillaume/Documents/Futoshiki/util.h
+
+/home/guillaume/Documents/Futoshiki/main.c
 stdio.h
 -
 stdlib.h
 -
 string.h
 -
+ctype.h
+-
+unistd.h
+-
+constraint.h
+/home/guillaume/Documents/Futoshiki/constraint.h
+
+/home/guillaume/Documents/Futoshiki/util.h
+constraint.h
+/home/guillaume/Documents/Futoshiki/constraint.h
 

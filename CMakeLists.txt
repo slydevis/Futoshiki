@@ -3,4 +3,7 @@ project(Futoshiki)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -W -std=c99 -pedantic -I.")
 set(SOURCE_FILES main.c)
-add_executable(Futoshiki.out ${SOURCE_FILES})
+set(FILES {
+    constraint.h
+})
+add_executable(Futoshiki.out ${SOURCE_FILES} )
