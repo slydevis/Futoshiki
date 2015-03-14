@@ -16,6 +16,7 @@ set(FILES {
     util.h
     constraint.h
     initTest.h
+    file.h
 })
 
 add_executable(Futoshiki.out ${SOURCE_FILES})
