@@ -199,27 +199,6 @@ void readGrid(const char* path) {
 * FONCTION DE VERIFICATION
 ***********************************************************************************************************************/
 
-/*int checkFutoshiki() {
-    int nbColCheck = 1;
-    for(int i = 0; i < gridSize*gridSize - 1; ++i) {
-        for(int j = nbColCheck * gridSize - 1; j > 0; --j) {
-            if (i != j && (j - 1)%(gridSize - 1) == i%(gridSize - 1) && grid[i].value == grid[j].value) {
-                return false;
-            }
-
-            if(i == j%nbColCheck && grid[i].value == grid[j + gridSize * nbColCheck].value)
-                return false;
-
-        }
-        nbColCheck++;
-    }
-
-    if(tabContrainte != NULL && !testContrainte())
-        return false;
-
-    return true;
-}*/
-
 int checkFutoshiki(int indice) {
     // Line verification
     for(int i = indice - indice%gridSize; i < indice + gridSize; ++i) {
@@ -301,7 +280,7 @@ int forwardChecking() {
 int resolveFutoshiki(int (*f)()) {
 
     // En attendant que l'algorithme soit fait, afin d'afficher la grille à tous les coups
-    return f();;
+    return f();
 }
 
 int main(int argc, char* argv[]) {
