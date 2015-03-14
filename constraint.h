@@ -1,6 +1,7 @@
 #ifndef _CONSTRAINT_H
 #define _CONSTRAINT_H
 
+#include <term.h>
 #include "util.h"
 
 struct Contrainte* tabContrainte = NULL;
@@ -65,6 +66,7 @@ int checkContrainte(Contrainte* c)
         case 'v':
             return grid[c->v1].value > grid[c->v2].value;
     }
+
     return false;
 }
 
@@ -77,6 +79,15 @@ int testContrainte() {
     }
 
     return res;
+}
+
+void getContrainte(struct Contrainte con[], int indice) {
+    for(int i = 0, cpt = 0; i < tailleTab; ++i, cpt++) {
+        if(tabContrainte[i].v1 == indice)
+            con[cpt] = tabContrainte[i];
+        if(tabContrainte[i].v2 == indice)
+            con[cpt] = tabContrainte[i];
+    }
 }
 
 #endif /* _CONSTRAINT_H */

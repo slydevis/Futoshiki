@@ -7,8 +7,7 @@
 #include <unistd.h>
 
 #include "constraint.h"
-
-#define DEBUG true
+#include "util.h"
 
 /***********************************************************************************************************************
 * TEST UNITAIRE : INITIALISATION
@@ -74,7 +73,7 @@ void initTest1() {
     tailleTab = 0;
 
     for(int i = 0; i < gridSize*gridSize; ++i) {
-        grid[i].value = i;
+        grid[i].value = 0;
         grid[i].canChange = true;
     }
 }
@@ -85,11 +84,11 @@ void initTest2() {
     tailleTab = 0;
 
     for(int i = 0; i < gridSize*gridSize; ++i) {
-        grid[i].value = i;
+        grid[i].value = i + 1;
         grid[i].canChange = true;
     }
 
-    grid[3].value = 4;
+    grid[3].value = 5;
 }
 
 void initTest3() {
@@ -98,11 +97,11 @@ void initTest3() {
     tailleTab = 0;
 
     for(int i = 0; i < gridSize*gridSize; ++i) {
-        grid[i].value = i;
+        grid[i].value = i + 1;
         grid[i].canChange = true;
     }
 
-    grid[gridSize+3].value = 4;
+    grid[gridSize].value = 1;
 }
 
 void initTest4() {
@@ -111,11 +110,11 @@ void initTest4() {
     tailleTab = 0;
 
     for(int i = 0; i < gridSize*gridSize; ++i) {
-        grid[i].value =  i;
+        grid[i].value =  i + 1;
         grid[i].canChange = true;
     }
 
-    grid[3*gridSize + 2].value = 2;
+    grid[3*gridSize + 1].value = 1;
 }
 
 void initTest5() {
@@ -128,7 +127,7 @@ void initTest5() {
         grid[i].canChange = true;
     }
 
-    grid[3*gridSize + 1].value = 2;
+    grid[4*gridSize + 3].value = 3;
 }
 
 void initTest6() {
@@ -137,7 +136,7 @@ void initTest6() {
     tailleTab = 0;
 
     for(int i = 0; i < gridSize*gridSize; ++i) {
-        grid[i].value = i;
+        grid[i].value = i + 1;
         grid[i].canChange = true;
     }
 
@@ -200,9 +199,9 @@ void readGrid(const char* path) {
 * FONCTION DE VERIFICATION
 ***********************************************************************************************************************/
 
-int checkFutoshiki() {
+/*int checkFutoshiki() {
     int nbColCheck = 1;
-    for(int i = 0; i < gridSize*4 - 1; ++i) {
+    for(int i = 0; i < gridSize*gridSize - 1; ++i) {
         for(int j = nbColCheck * gridSize - 1; j > 0; --j) {
             if (i != j && (j - 1)%(gridSize - 1) == i%(gridSize - 1) && grid[i].value == grid[j].value) {
                 return false;
@@ -219,26 +218,77 @@ int checkFutoshiki() {
         return false;
 
     return true;
-}
+}*/
 
-int backTrack() {
-    for(int i = 0; i <= gridSize*gridSize; ++i) {
-        sleep(1);
-        clearScreen();
+int checkFutoshiki(int indice) {
+    // Line verification
+    for(int i = indice - indice%gridSize; i < indice + gridSize; ++i) {
+        if(grid[indice].value != 0 && i != indice && grid[i].value == grid[indice].value) {
+            #ifdef DEBUG
+                color(COLOR_BLUE);
+                for (int j = 0; j < gridSize * gridSize; ++j) {
+                    if(j == i || j == indice) color(COLOR_RED);
+                    if (j % gridSize == 0) printf("\n");
+                    printf("\t%d", grid[j].value);
+                    if(j == i || j == indice) color(COLOR_BLUE);
+                }
+                color(COLOR_WHITE);
+                printf("\n");
+            #endif /* isDebug */
+
+            return false;
+        }
+    }
+
+    // Column verification
+    for(int i = indice; i < gridSize*gridSize; i += gridSize) {
+        if(grid[indice].value != 0 && i != indice && grid[i].value == grid[indice].value) {
+            #ifdef DEBUG
+                color(COLOR_BLUE);
+                for (int j = 0; j < gridSize * gridSize; ++j) {
+                    if(j == i || j == indice) color(COLOR_RED);
+                    if (j % gridSize == 0) printf("\n");
+                    printf("\t%d", grid[j].value);
+                    if(j == i || j == indice) color(COLOR_BLUE);
+                }
+                color(COLOR_WHITE);
+                printf("\n");
+            #endif /* isDebug */
+            return false;
+        }
+    }
+
+    #ifdef DEBUG
         color(COLOR_BLUE);
-        for(int j = 0; j < gridSize*gridSize; ++j) {
-            if(j == i) {
-                color(COLOR_RED);
-            }
-
-            if(j%gridSize == 0) printf("\n");
+        for (int j = 0; j < gridSize * gridSize; ++j) {
+            if (j % gridSize == 0) printf("\n");
             printf("\t%d", grid[j].value);
         }
         color(COLOR_WHITE);
         printf("\n");
+    #endif /* isDebug */
 
-        grid[i].value = 5;
+    return true;
+}
+
+int backTrack() {
+/*for(int i = 0; i <= gridSize*gridSize; ++i) {
+    sleep(1);
+    clearScreen();
+    color(COLOR_BLUE);
+    for(int j = 0; j < gridSize*gridSize; ++j) {
+        if(j == i) {
+            color(COLOR_RED);
+        }
+
+        if(j%gridSize == 0) printf("\n");
+        printf("\t%d", grid[j].value);
     }
+    color(COLOR_WHITE);
+    printf("\n");
+
+    grid[i].value = 5;
+}*/
 
     return false;
 }
@@ -251,14 +301,10 @@ int forwardChecking() {
 int resolveFutoshiki(int (*f)()) {
 
     // En attendant que l'algorithme soit fait, afin d'afficher la grille à tous les coups
-    if(DEBUG)
-        return f();
-
-    return -1;
+    return f();;
 }
 
 int main(int argc, char* argv[]) {
-
     if((argc - 1) != 1) {
         color(COLOR_RED);
 		printf("Erreur d'argument\n");
@@ -309,14 +355,13 @@ int main(int argc, char* argv[]) {
     printf("\n\n===> TEST UNIT\n\n");
 
     printf("==> TEST : checkFutoshiki()\n\n");
-
     // Test de la vérification de la grille
-    runTest(checkFutoshiki, initTest1, true);
-    runTest(checkFutoshiki, initTest2, false);
-    runTest(checkFutoshiki, initTest3, true);
-    runTest(checkFutoshiki, initTest4, false);
-    runTest(checkFutoshiki, initTest5, true);
-    runTest(checkFutoshiki, initTest6, false);
+    runTestWithIntArg(checkFutoshiki, initTest1, true, 0);
+    runTestWithIntArg(checkFutoshiki, initTest2, false, 3);
+    runTestWithIntArg(checkFutoshiki, initTest3, false, 0);
+    runTestWithIntArg(checkFutoshiki, initTest4, true, 0);
+    runTestWithIntArg(checkFutoshiki, initTest5, false, 3);
+    runTestWithIntArg(checkFutoshiki, initTest6, false, gridSize*3);
 
     printf("\n==> TEST : testContrainte()\n\n");
     // Test de la vérification des contraintes

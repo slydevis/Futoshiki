@@ -23,7 +23,7 @@
 
 typedef struct {
     int value;
-    int canChange;    
+    int canChange;
 } int_t;
 
 int_t grid[MAX_SIZE * MAX_SIZE];
@@ -53,6 +53,24 @@ void runTest(int (*f)(), void (*init)(), int result) {
     }
 }
 
+void runTestWithIntArg(int (*f)(int), void (*init)(), int result, int arg) {
+    (*init)();
+    int r = (*f)(arg);
+
+    printf("Run Test : ");
+
+    if(r == result) {
+        color(COLOR_GREEN);
+        printf("OK\n");
+        color(COLOR_WHITE);
+    }
+    else {
+        color(COLOR_RED);
+        printf("Fail\n");
+        color(COLOR_WHITE);
+        exit(-1);
+    }
+}
 /***********************************************************************************************************************
 * FONCTION D'AFFICHAGE
 ***********************************************************************************************************************/
@@ -77,4 +95,10 @@ void printGrid() {
 /*Efface la console sous linux */
 void clearScreen() { printf("\033[H\033[2J"); }
 
+void resetAtIndice(int indice) {
+    for(int i = indice + 1; i < gridSize*gridSize; ++i) {
+        if(grid[i].canChange == true)
+            grid[i].value = 0;
+    }
+}
 #endif /* UTIL_H */
