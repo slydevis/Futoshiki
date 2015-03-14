@@ -294,7 +294,7 @@ int main(int argc, char* argv[]) {
     clearScreen();
 
     readGrid(argv[1]);
-/*
+
     printf("    ");
 
     for(int i = 0; i < ((gridSize*5)/2) - 6; ++i)
@@ -318,19 +318,12 @@ int main(int argc, char* argv[]) {
 
     printf("\n");
 
-    for(int i = 0; i < tailleTab; ++i) {
-        printf("\n%d %c %d", tabContrainte[i].v1, tabContrainte[i].contrainte, tabContrainte[i].v2);
-    }
-
-    printf("\n\n");
-*/
     int res = resolveFutoshiki(backTrack);
 
     if(res < 0) {
         printf("La grille n'a pas de solution\n");
         return 0;
     }
-
 
     #ifdef DEBUG
         printf("\n\n===> TEST UNIT\n\n");
