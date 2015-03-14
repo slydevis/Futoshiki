@@ -213,7 +213,7 @@ int checkFutoshiki(int indice) {
                 }
                 color(COLOR_WHITE);
                 printf("\n");
-            #endif /* isDebug */
+            #endif /* DEBUG */
 
             return false;
         }
@@ -232,7 +232,7 @@ int checkFutoshiki(int indice) {
                 }
                 color(COLOR_WHITE);
                 printf("\n");
-            #endif /* isDebug */
+            #endif /* DEBUG */
             return false;
         }
     }
@@ -245,7 +245,7 @@ int checkFutoshiki(int indice) {
         }
         color(COLOR_WHITE);
         printf("\n");
-    #endif /* isDebug */
+    #endif /* DEBUG */
 
     return true;
 }
@@ -331,23 +331,26 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    printf("\n\n===> TEST UNIT\n\n");
 
-    printf("==> TEST : checkFutoshiki()\n\n");
-    // Test de la vérification de la grille
-    runTestWithIntArg(checkFutoshiki, initTest1, true, 0);
-    runTestWithIntArg(checkFutoshiki, initTest2, false, 3);
-    runTestWithIntArg(checkFutoshiki, initTest3, false, 0);
-    runTestWithIntArg(checkFutoshiki, initTest4, true, 0);
-    runTestWithIntArg(checkFutoshiki, initTest5, false, 3);
-    runTestWithIntArg(checkFutoshiki, initTest6, false, gridSize*3);
+    #ifdef DEBUG
+        printf("\n\n===> TEST UNIT\n\n");
 
-    printf("\n==> TEST : testContrainte()\n\n");
-    // Test de la vérification des contraintes
-    runTest(testContrainte, initContrainte1, false);
-    runTest(testContrainte, initContrainte2, true);
-    runTest(testContrainte, initContrainte3, true);
-    runTest(testContrainte, initContrainte4, false);
+        printf("==> TEST : checkFutoshiki()\n\n");
+        // Test de la vérification de la grille
+        runTestWithIntArg(checkFutoshiki, initTest1, true, 0);
+        runTestWithIntArg(checkFutoshiki, initTest2, false, 3);
+        runTestWithIntArg(checkFutoshiki, initTest3, false, 0);
+        runTestWithIntArg(checkFutoshiki, initTest4, true, 0);
+        runTestWithIntArg(checkFutoshiki, initTest5, false, 3);
+        runTestWithIntArg(checkFutoshiki, initTest6, false, gridSize*3);
+
+        printf("\n==> TEST : testContrainte()\n\n");
+        // Test de la vérification des contraintes
+        runTest(testContrainte, initContrainte1, false);
+        runTest(testContrainte, initContrainte2, true);
+        runTest(testContrainte, initContrainte3, true);
+        runTest(testContrainte, initContrainte4, false);
+    #endif /* DEBUG */
 
     return 0;
 }
