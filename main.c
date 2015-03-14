@@ -17,7 +17,7 @@ void initContrainte1() {
 
     free(tabContrainte);
     tabContrainte = NULL;
-    tailleTab = 0;
+    tailleTabContrainte = 0;
 
     addContrainte(0, 1, '<');
 
@@ -31,7 +31,7 @@ void initContrainte1() {
 void initContrainte2() {
     free(tabContrainte);
     tabContrainte = NULL;
-    tailleTab = 0;
+    tailleTabContrainte = 0;
 
     addContrainte(0, 1, '>');
 
@@ -44,7 +44,7 @@ void initContrainte2() {
 void initContrainte3() {
     free(tabContrainte);
     tabContrainte = NULL;
-    tailleTab = 0;
+    tailleTabContrainte = 0;
 
     addContrainte(0, 1, 'v');
 
@@ -57,7 +57,7 @@ void initContrainte3() {
 void initContrainte4() {
     free(tabContrainte);
     tabContrainte = NULL;
-    tailleTab = 0;
+    tailleTabContrainte = 0;
 
     addContrainte(0, 1, '^');
 
@@ -70,7 +70,7 @@ void initContrainte4() {
 void initTest1() {
     free(tabContrainte);
     tabContrainte = NULL;
-    tailleTab = 0;
+    tailleTabContrainte = 0;
 
     for(int i = 0; i < gridSize*gridSize; ++i) {
         grid[i].value = 0;
@@ -81,7 +81,7 @@ void initTest1() {
 void initTest2() {
     free(tabContrainte);
     tabContrainte = NULL;
-    tailleTab = 0;
+    tailleTabContrainte = 0;
 
     for(int i = 0; i < gridSize*gridSize; ++i) {
         grid[i].value = i + 1;
@@ -94,7 +94,7 @@ void initTest2() {
 void initTest3() {
     free(tabContrainte);
     tabContrainte = NULL;
-    tailleTab = 0;
+    tailleTabContrainte = 0;
 
     for(int i = 0; i < gridSize*gridSize; ++i) {
         grid[i].value = i + 1;
@@ -107,7 +107,7 @@ void initTest3() {
 void initTest4() {
     free(tabContrainte);
     tabContrainte = NULL;
-    tailleTab = 0;
+    tailleTabContrainte = 0;
 
     for(int i = 0; i < gridSize*gridSize; ++i) {
         grid[i].value =  i + 1;
@@ -120,7 +120,7 @@ void initTest4() {
 void initTest5() {
     free(tabContrainte);
     tabContrainte = NULL;
-    tailleTab = 0;
+    tailleTabContrainte = 0;
 
     for(int i = 0; i < gridSize*gridSize; ++i) {
         grid[i].value = i;
@@ -133,7 +133,7 @@ void initTest5() {
 void initTest6() {
     free(tabContrainte);
     tabContrainte = NULL;
-    tailleTab = 0;
+    tailleTabContrainte = 0;
 
     for(int i = 0; i < gridSize*gridSize; ++i) {
         grid[i].value = i + 1;

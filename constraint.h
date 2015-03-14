@@ -5,7 +5,7 @@
 #include "util.h"
 
 struct Contrainte* tabContrainte = NULL;
-int tailleTab = 0;
+int tailleTabContrainte = 0;
 
 typedef struct Contrainte{
     int v1, v2;
@@ -20,8 +20,8 @@ void majContrainte (Contrainte contrainte) {
         tabContrainte = calloc(1, sizeof(Contrainte));
     }
 
-    tailleTab += 1;
-    void* res = realloc(tabContrainte, tailleTab * sizeof(Contrainte));
+    tailleTabContrainte += 1;
+    void* res = realloc(tabContrainte, tailleTabContrainte * sizeof(Contrainte));
 
     if(res == NULL) {
         free(tabContrainte);
@@ -31,7 +31,7 @@ void majContrainte (Contrainte contrainte) {
         exit(1);
     }
 
-    tabContrainte[tailleTab - 1] = contrainte;
+    tabContrainte[tailleTabContrainte - 1] = contrainte;
 }
 
 /* Initialise la contrainte */
@@ -73,7 +73,7 @@ int checkContrainte(Contrainte* c)
 int testContrainte() {
 
     int res = false;
-    for(int i = 0; i < tailleTab; ++i) {
+    for(int i = 0; i < tailleTabContrainte; ++i) {
         Contrainte c = tabContrainte[i];
         res = checkContrainte(&c);
     }
@@ -82,7 +82,7 @@ int testContrainte() {
 }
 
 void getContrainte(struct Contrainte con[], int indice) {
-    for(int i = 0, cpt = 0; i < tailleTab; ++i, cpt++) {
+    for(int i = 0, cpt = 0; i < tailleTabContrainte; ++i, cpt++) {
         if(tabContrainte[i].v1 == indice)
             con[cpt] = tabContrainte[i];
         if(tabContrainte[i].v2 == indice)
