@@ -1,5 +1,5 @@
-#ifndef _UTIL_H
-#define _UTIL_H
+#ifndef __UTIL_H__
+#define __UTIL_H__
 
 #include "constraint.h"
 
@@ -101,4 +101,4 @@ void resetAtIndice(int indice) {
             grid[i].value = 0;
     }
 }
-#endif /* UTIL_H */
+#endif /* __UTIL_H__ */

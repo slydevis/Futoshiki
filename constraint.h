@@ -1,5 +1,5 @@
-#ifndef _CONSTRAINT_H
-#define _CONSTRAINT_H
+#ifndef __CONSTRAINT_H__
+#define __CONSTRAINT_H__
 
 #include <term.h>
 #include "util.h"
@@ -90,4 +90,4 @@ void getContrainte(struct Contrainte con[], int indice) {
     }
 }
 
-#endif /* _CONSTRAINT_H */
+#endif /* __CONSTRAINT_H__ */
