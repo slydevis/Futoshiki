@@ -15,6 +15,10 @@
 * FONCTION DE VERIFICATION
 ***********************************************************************************************************************/
 
+/***********************************************************************************************************************
+* Renvoie -1 si il y a pas de problème sinon il renvoi l'indice où une des contrainte est violée
+* Par exemple si il y a deux fois le même chiffre dans la même colonne
+***********************************************************************************************************************/
 int checkFutoshiki(int indice) {
     // Line verification
     for(int i = indice - indice%gridSize; i < indice + gridSize; ++i) {
@@ -31,12 +35,12 @@ int checkFutoshiki(int indice) {
                 printf("\n");
             #endif /* DEBUG */
 
-            return false;
+            return i;
         }
     }
 
     // Column verification
-    for(int i = indice; i < gridSize*gridSize; i += gridSize) {
+    for(int i = indice%gridSize; i < gridSize*gridSize; i += gridSize) {
         if(grid[indice].value != 0 && i != indice && grid[i].value == grid[indice].value) {
             #ifdef DEBUG
                 color(COLOR_BLUE);
@@ -49,7 +53,7 @@ int checkFutoshiki(int indice) {
                 color(COLOR_WHITE);
                 printf("\n");
             #endif /* DEBUG */
-            return false;
+            return i;
         }
     }
 
@@ -63,7 +67,7 @@ int checkFutoshiki(int indice) {
         printf("\n");
     #endif /* DEBUG */
 
-    return true;
+    return -1;
 }
 
 int backTrack() {
@@ -88,8 +92,9 @@ int backTrack() {
     return false;
 }
 
+// TODO : Faire le tableau de domaine (tableau de liste chainée surement sera le plus simple)
 int forwardChecking() {
-    return -1;
+    return false;
 }
 
 /* Retourne -1 si aucune solution, dans le cas ou il existe une solution renvoie 1 */
@@ -141,18 +146,20 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
+    /* Lancement de tous les tests unitaires (Avec l'option cmake DEBUG seulement) */
     #ifdef DEBUG
         printf("\n\n===> TEST UNIT\n\n");
 
         printf("==> TEST : checkFutoshiki()\n\n");
         // Test de la vérification de la grille
-        runTestWithIntArg(checkFutoshiki, initTest1, true, 0);
-        runTestWithIntArg(checkFutoshiki, initTest2, false, 3);
-        runTestWithIntArg(checkFutoshiki, initTest3, false, 0);
-        runTestWithIntArg(checkFutoshiki, initTest4, true, 0);
-        runTestWithIntArg(checkFutoshiki, initTest5, false, 3);
-        runTestWithIntArg(checkFutoshiki, initTest6, false, gridSize*3);
-
+        runTestWithIntArg(checkFutoshiki, initTest1, -1, 0);
+        runTestWithIntArg(checkFutoshiki, initTest2, 4, 3);
+        runTestWithIntArg(checkFutoshiki, initTest3, 5, 0);
+        runTestWithIntArg(checkFutoshiki, initTest4, -1, 0);
+        runTestWithIntArg(checkFutoshiki, initTest5, 4*gridSize + 3, 3);
+        runTestWithIntArg(checkFutoshiki, initTest6, gridSize*3 + 1, gridSize*3);
+        runTestWithIntArg(checkFutoshiki, initTest7, gridSize*4 + gridSize - 2, gridSize*4 + gridSize - 1);
+        runTestWithIntArg(checkFutoshiki, initTest8, gridSize*2, gridSize*4);
         printf("\n==> TEST : testContrainte()\n\n");
         // Test de la vérification des contraintes
         runTest(testContrainte, initContrainte1, false);

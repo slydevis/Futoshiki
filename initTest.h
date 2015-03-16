@@ -1,6 +1,8 @@
 #ifndef __INITTEST_H__
 #define __INITTEST_H__
 
+#include "util.h"
+
 /***********************************************************************************************************************
 * TEST UNITAIRE : INITIALISATION
 ***********************************************************************************************************************/
@@ -136,4 +138,32 @@ void initTest6() {
     grid[3*gridSize].value = 2;
 }
 
+void initTest7() {
+    free(tabContrainte);
+    tabContrainte = NULL;
+    tailleTabContrainte = 0;
+
+    for(int i = 0; i < gridSize*gridSize; ++i) {
+        grid[i].value = i + 1;
+        grid[i].canChange = true;
+    }
+
+    grid[4*gridSize + gridSize - 2].value = 2;
+    grid[4*gridSize + gridSize - 1].value = 2;
+}
+
+void initTest8() {
+    free(tabContrainte);
+    tabContrainte = NULL;
+
+    tailleTabContrainte = 0;
+
+    for(int i = 0; i < gridSize*gridSize; ++i) {
+        grid[i].value = i + 1;
+        grid[i].canChange = true;
+    }
+
+    grid[4*gridSize].value = 2;
+    grid[2*gridSize].value = 2;
+}
 #endif /* __INITTEST_H__ */
