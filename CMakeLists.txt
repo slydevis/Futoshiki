@@ -10,6 +10,11 @@ IF(DEBUG)
     add_definitions(-DDEBUG)
 ENDIF()
 
+IF(NOT DEBUG)
+    message("-- RELEASE : ON")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3")
+ENDIF()
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -W -std=c99 -pedantic -I.")
 set(SOURCE_FILES main.c)
 set(FILES {
