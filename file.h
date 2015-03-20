@@ -5,22 +5,29 @@
 * LECTURE DU FICHIER SOURCE + INITIALISATION DES VARIABLES GLOBALES
 ***********************************************************************************************************************/
 
+#include "util.h"
+
 /* Initialise les données de la grille */
 void gridLineManager(char* line, int nbLine) {
-    for(int i = 0; i < (int) strlen(line); ++i)
+    for(int i = 0, pos = 0; pos < (int) strlen(line); ++pos, ++i)
     {
-        if (line[i] == '<' || line[i] == '>')
-            addContrainte(nbLine * gridSize + i, nbLine * gridSize + i + 1, line[i]);
-        else if (line[i] == '^' ||line[i] == 'v') {
-            addContrainte((nbLine - 1) * gridSize + i, nbLine * gridSize + i, line[i]);
+        if (line[pos] == '<' || line[pos] == '>') {
+            addContrainte(nbLine * gridSize + i -1, nbLine * gridSize + i, line[pos]);
+            i--;
         }
-        else if(isdigit(line[i])) {
-            grid[nbLine * gridSize + i].value = line[i] - '0';
-            if(line[i] == '0')
+        else if (line[pos] == '^' ||line[pos] == 'v') {
+            addContrainte((nbLine - 1) * gridSize + pos, nbLine * gridSize + pos, line[pos]);
+        }
+        else if(isdigit(line[pos])) {
+            grid[nbLine * gridSize + i].value = line[pos] - '0';
+            if(line[pos] == '0')
                 grid[nbLine * gridSize + i].canChange = true;
             else
                 grid[nbLine * gridSize + i].canChange = false;
         }
+        else
+            i--;
+
     }
 }
 
@@ -33,9 +40,9 @@ void readGrid(const char* path) {
     file = fopen(path, "r");
 
     if (file != NULL) {
+
         fgets(buff, MAX_SIZE, file);
         gridSize = atoi(buff);
-
 
         int nbLigne = 0;
         int incr = 1;
@@ -50,6 +57,19 @@ void readGrid(const char* path) {
 
         fclose(file);
     }
+}
+
+// TODO : Ecrire la grille dans un fichier de log
+void writeGrid(const char* path) {
+    (void) path;
+    printf("Arrêt du programme : Creation des logs : ");
+
+    color(COLOR_GREEN);
+    printf("OK\n");
+    color(COLOR_WHITE);
+
+    printBeautifulGrid(COLOR_GREEN);
+    exit(0);
 }
 
 #endif /* __FILE_H__ */

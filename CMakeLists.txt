@@ -4,10 +4,16 @@ project(Futoshiki)
 set(DEBUG OFF)
 
 option(DEBUG "Activate the debug mode (more print)")
+option(VERBOSE "Activate the full verbose mode")
 
 IF(DEBUG)
     message("-- DEBUG : ON")
     add_definitions(-DDEBUG)
+ENDIF()
+
+IF(VERBOSE)
+    message("-- VERBOSE : ON")
+    add_definitions(-DVERBOSE)
 ENDIF()
 
 IF(NOT DEBUG)

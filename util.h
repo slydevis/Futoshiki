@@ -1,6 +1,9 @@
 #ifndef __UTIL_H__
 #define __UTIL_H__
 
+#include <signal.h>     /* sigaction */
+#include <time.h> /* clock */
+
 #include "constraint.h"
 
 #define COLOR_BLACK "30"
@@ -13,9 +16,31 @@
 #define color(param) printf("\033[%sm",param)
 
 #define MAX_SIZE 500
+#define SLEEP_TIME 1
 
 #define true 1
 #define false 0
+
+clock_t debut;
+clock_t fin;
+
+void writeGrid(const char* path);
+
+// Handler if SIGINT
+void logOnStop(int signal) {
+    if(signal == SIGINT)
+        writeGrid("log.txt");
+}
+
+/***********************************************************************************************************************
+* CHRONO
+***********************************************************************************************************************/
+
+void startChrono() { debut = clock(); }
+
+void stopChrono() { fin = clock(); }
+
+float getTimer() { return (fin - debut)*1.0/CLOCKS_PER_SEC; }
 
 /***********************************************************************************************************************
 * VARIABLE GLOBAL DIVERS
@@ -65,6 +90,7 @@ void runTestWithIntArg(int (*f)(int), void (*init)(), int result, int arg) {
         color(COLOR_WHITE);
     }
     else {
+        printf("\n");
         color(COLOR_RED);
         printf("Fail\n");
         color(COLOR_WHITE);
@@ -81,11 +107,41 @@ void printGrid() {
     for(int i = 0; i < gridSize; ++i) {
         printf("\n");
 
-        for(int j = 0; j < gridSize; ++j)
+        for(int j = 0; j < gridSize; ++j) {
             printf("%5d", grid[nbLigne * gridSize + j].value);
+        }
 
         nbLigne++;
     }
+}
+
+void printBeautifulGrid(char* gridColor) {
+    printf("    ");
+
+    for(int i = 0; i < ((gridSize*5)/2) - 6; ++i)
+        printf("%c", '=');
+
+    printf(" FUTOSHIKI ");
+
+    for(int i = 0; i < ((gridSize*5)/2) - 6; ++i)
+        printf("%c", '=');
+
+    color(gridColor); // Vert
+
+    printGrid();
+
+    color(COLOR_WHITE); // Blanc
+
+    printf("\n    ");
+
+    for(int i = 0; i < ((gridSize)*5) - 2; ++i)
+        printf("%c", '=');
+
+    printf("\n");
+
+    printf("    ");
+
+    printf("\n");
 }
 
 /***********************************************************************************************************************
@@ -95,10 +151,4 @@ void printGrid() {
 /*Efface la console sous linux */
 void clearScreen() { printf("\033[H\033[2J"); }
 
-void resetAtIndice(int indice) {
-    for(int i = indice + 1; i < gridSize*gridSize; ++i) {
-        if(grid[i].canChange == true)
-            grid[i].value = 0;
-    }
-}
 #endif /* __UTIL_H__ */

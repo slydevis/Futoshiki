@@ -6,6 +6,7 @@
 
 struct Contrainte* tabContrainte = NULL;
 int tailleTabContrainte = 0;
+int posContrainte = 0;
 
 typedef struct Contrainte{
     int v1, v2;
@@ -55,6 +56,8 @@ void addContrainte (int a, int b, char c)
 /* Renvoie le résultat de la vérification de contrainte */
 int checkContrainte(Contrainte* c)
 {
+    if(grid[c->v1].value == 0 || grid[c->v2].value == 0) return true;
+
     switch (c->contrainte)
     {
         case '<':
@@ -79,15 +82,6 @@ int testContrainte() {
     }
 
     return res;
-}
-
-void getContrainte(struct Contrainte con[], int indice) {
-    for(int i = 0, cpt = 0; i < tailleTabContrainte; ++i, cpt++) {
-        if(tabContrainte[i].v1 == indice)
-            con[cpt] = tabContrainte[i];
-        if(tabContrainte[i].v2 == indice)
-            con[cpt] = tabContrainte[i];
-    }
 }
 
 #endif /* __CONSTRAINT_H__ */
