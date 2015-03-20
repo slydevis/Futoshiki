@@ -194,7 +194,7 @@ int main(int argc, char* argv[]) {
         runTestWithIntArg(checkFutoshiki, initCheckFutoTest8, gridSize*2, gridSize*4);
 
         if(gridSize == 6)
-            runTestWithIntArg(checkFutoshiki, initTest9, -1, 15);
+            runTestWithIntArg(checkFutoshiki, initCheckFutoTest9, -1, 15);
 
         printf("\n==> TEST : testContrainte()\n\n");
         // Test de la vérification des contraintes

@@ -1,7 +1,6 @@
 #ifndef __CONSTRAINT_H__
 #define __CONSTRAINT_H__
 
-#include <term.h>
 #include "util.h"
 
 struct Contrainte* tabContrainte = NULL;
