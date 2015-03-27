@@ -12,6 +12,7 @@
 #include "file.h"
 
 int indice = 0;
+unsigned long long noeud = 0;
 
 /***********************************************************************************************************************
 * FONCTION DE VERIFICATION
@@ -23,8 +24,10 @@ int checkFutoshiki(int indice);
 int changerValeur()
 {
     // Cette case n'est pas initiliasée
-    if (grid[indice].value == 0)
+    if (grid[indice].value == 0)  {
         grid[indice].value = 1;
+        noeud++;
+    }
 
     // Evite de lancer de lancer plusieur fois la vérification = Gain de temps
     int resultatCheck = checkFutoshiki(indice);
@@ -43,7 +46,8 @@ int changerValeur()
                         indice--;
                     else {
                         color(COLOR_RED);
-                        printf ("\nPas de solution : %f\n\n", getTimer());
+                        printf ("\nPas de solution : %f\n", getTimer());
+                        printf("\tNombre de noeuds parcouru %llu\n\n", noeud);
                         color(COLOR_WHITE);
                         return false;
                     }
@@ -52,7 +56,8 @@ int changerValeur()
             else {
                 stopChrono();
                 color(COLOR_RED);
-                printf ("\nPas de solution en %f\n\n", getTimer());
+                printf ("\nPas de solution en %f\n", getTimer());
+                printf("\tNombre de noeuds parcouru %llu\n\n", noeud);
                 color(COLOR_WHITE);
                 return false;
             }
@@ -60,11 +65,13 @@ int changerValeur()
 
         // incrémente la valeur de la case
         grid[indice].value++;
+        noeud++;
     }
     else if (resultatCheck < 0 && indice == gridSize*gridSize -1) {
         stopChrono();
         color(COLOR_GREEN);
-        printf ("\tSolution trouvée en %f !\n\n", getTimer());
+        printf ("\tSolution trouvée en %f !\n", getTimer());
+        printf("\tNombre de noeuds parcouru %llu\n\n", noeud);
         color(COLOR_WHITE);
         return true;
     }
@@ -177,6 +184,22 @@ int main(int argc, char* argv[]) {
     readGrid(argv[1]);
 
     resolveFutoshiki(backTrack);
+
+/*
+    #ifndef DEBUG
+        #ifndef VERBOSE
+            writeGrid("backTrack");
+        #endif
+    #endif
+
+    resolveFutoshiki(forwardChecking);
+
+    #ifndef DEBUG
+        #ifndef VERBOSE
+            writeGrid("forwardChecking");
+        #endif
+    #endif
+*/
 
     /* Lancement de tous les tests unitaires (Avec l'option cmake DEBUG seulement) */
     #ifdef DEBUG
