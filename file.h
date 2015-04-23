@@ -7,6 +7,7 @@
 
 #include "util.h"
 
+int cpt = 1;
 /* Initialise les données de la grille */
 void gridLineManager(char* line, int nbLine) {
     for(int i = 0, pos = 0; pos < (int) strlen(line); ++pos, ++i)
@@ -26,12 +27,16 @@ void gridLineManager(char* line, int nbLine) {
                 grid[nbLine * gridSize + i].canChange = false;
             }
 
-            grid[nbLine * gridSize + i].dom = NULL;
+            grid[nbLine * gridSize + i].dom = initDomaine(NULL, grid[nbLine * gridSize + i].value);
+            printf("element n°%d\n", cpt);
+            cpt++;
+
+            // grid[nbLine * gridSize + i].dom = dom;
             // initDomaine(grid[nbLine * gridSize + i].dom, grid[nbLine * gridSize + i].value);
+            // printDomaine(grid[nbLine * gridSize + i].dom);
         }
         else
             i--;
-
     }
 }
 

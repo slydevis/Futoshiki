@@ -14,8 +14,10 @@ typedef struct element {
 
 typedef Element* Domaine;
 
-void addDomaine(Element* dom, int value) {
-    Element *newElement = malloc(sizeof(Element) * gridSize + 1);
+Domaine addDomaine(Domaine dom, int value) {
+    Domaine newElement = malloc(sizeof(Domaine));
+
+    // Ajout un fin de liste
 
     if(newElement != NULL) {
         newElement->value = value;
@@ -23,53 +25,53 @@ void addDomaine(Element* dom, int value) {
     }
 
     if(dom == NULL) {
-        printf("Je passe\t");
-        dom = newElement;
-        free(newElement);
-        return;
+        return newElement;
     }
 
     Domaine list = dom;
     while(list->next != NULL) {
         list = list->next;
     }
+
     list->next = newElement;
 
-    dom = list;
-
-    free(newElement);
-    free(list);
+    return dom;
 }
 
 void removeDomaine(int pos) {
     (void) pos;
 }
 
-void initDomaine(Element* dom, int value) {
+Domaine initDomaine(Domaine dom, int value) {
     if (value != 0) {
-        addDomaine(dom, value);
-        return;
+        dom = addDomaine(dom, value);
+        return dom;
     }
 
     for (int i = 1; i <= gridSize; ++i) {
-    printf("\n");
-    addDomaine(dom, i);
+        dom = addDomaine(dom, i);
     }
+
+    return dom;
 }
 
-void printDomaine(Element* dom) {
+void printDomaine(Domaine dom) {
 
-//    Domaine list = dom;
+    if(dom == NULL)
+        return;
 
-    //while(list->next != NULL) {
-        printf("%d\t", dom->value);
-        //list = list->next;
-    //}
+    Domaine list = dom;
+
+    printf("==============>\n");
+
+    while(list != NULL) {
+        printf("%d\t", list->value);
+        list = list->next;
+    }
 
     printf("\n");
-   // free(list);
 
-    printf("OK\n");
+    printf("==============>\n");
 }
 
 #endif /* __DOMAIN_H__ */
