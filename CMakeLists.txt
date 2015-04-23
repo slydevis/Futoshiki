@@ -9,6 +9,7 @@ option(VERBOSE "Activate the full verbose mode")
 IF(DEBUG)
     message("-- DEBUG : ON")
     add_definitions(-DDEBUG)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g3")
 ENDIF()
 
 IF(VERBOSE)
@@ -28,6 +29,7 @@ set(FILES {
     constraint.h
     initTest.h
     file.h
+    domain.h
 })
 
 add_executable(Futoshiki.out ${SOURCE_FILES})

@@ -47,7 +47,7 @@ int changerValeur()
                     else {
                         color(COLOR_RED);
                         printf ("\nPas de solution : %f\n", getTimer());
-                        printf("\tNombre de noeuds parcouru %llu\n\n", noeud);
+                        printf("Nombre de noeuds parcouru %llu\n\n", noeud);
                         color(COLOR_WHITE);
                         return false;
                     }
@@ -57,7 +57,7 @@ int changerValeur()
                 stopChrono();
                 color(COLOR_RED);
                 printf ("\nPas de solution en %f\n", getTimer());
-                printf("\tNombre de noeuds parcouru %llu\n\n", noeud);
+                printf("Nombre de noeuds parcouru %llu\n\n", noeud);
                 color(COLOR_WHITE);
                 return false;
             }
@@ -229,7 +229,13 @@ int main(int argc, char* argv[]) {
         printf("\n===> TEST : backTrack() \n\n");
         runTest(backTrack, initBacktrackTest, true);
         runTest(backTrack, initBacktrackTest2, false);
-    #endif /* DEBUG */
+/*
+        printf("\n===> TEST : structure domaine \n\n");
+
+        for(int i = 0; i < gridSize*gridSize; ++i)
+            printDomaine(grid[i].dom);
+*/
+        #endif /* DEBUG */
 
     return 0;
 }

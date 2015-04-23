@@ -15,15 +15,19 @@ void gridLineManager(char* line, int nbLine) {
             addContrainte(nbLine * gridSize + i -1, nbLine * gridSize + i, line[pos]);
             i--;
         }
-        else if (line[pos] == '^' ||line[pos] == 'v') {
+        else if (line[pos] == '^' ||line[pos] == 'v')
             addContrainte((nbLine - 1) * gridSize + pos, nbLine * gridSize + pos, line[pos]);
-        }
         else if(isdigit(line[pos])) {
             grid[nbLine * gridSize + i].value = line[pos] - '0';
-            if(line[pos] == '0')
+            if(line[pos] == '0') {
                 grid[nbLine * gridSize + i].canChange = true;
-            else
+            }
+            else {
                 grid[nbLine * gridSize + i].canChange = false;
+            }
+
+            grid[nbLine * gridSize + i].dom = NULL;
+            // initDomaine(grid[nbLine * gridSize + i].dom, grid[nbLine * gridSize + i].value);
         }
         else
             i--;
@@ -60,12 +64,18 @@ void readGrid(const char* path) {
 }
 
 // TODO : Ecrire la grille dans un fichier de log
-void writeGrid(const char* path) {
-    (void) path;
-    printf("Arrêt du programme : Creation des logs : ");
+void writeGrid(char* buff) {
+    char path[100];
 
-    color(COLOR_GREEN);
-    printf("OK\n");
+    strcpy(path, buff);
+    strcat(path, ".log");
+
+    printf("Arrêt du programme -> Creation des logs : ");
+
+    color(COLOR_RED);
+    printf("Non implémenté\n");
+    //color(COLOR_GREEN);
+    //printf("OK\n");
     color(COLOR_WHITE);
 
     printBeautifulGrid(COLOR_GREEN);

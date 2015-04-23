@@ -5,6 +5,7 @@
 #include <time.h> /* clock */
 
 #include "constraint.h"
+#include "domain.h"
 
 #define COLOR_BLACK "30"
 #define COLOR_RED "31"
@@ -24,12 +25,12 @@
 clock_t debut;
 clock_t fin;
 
-void writeGrid(const char* path);
+void writeGrid(char* path);
 
 // Handler if SIGINT
 void logOnStop(int signal) {
     if(signal == SIGINT)
-        writeGrid("log.txt");
+        writeGrid("save");
 }
 
 /***********************************************************************************************************************
@@ -49,6 +50,7 @@ float getTimer() { return (fin - debut)*1.0/CLOCKS_PER_SEC; }
 typedef struct {
     int value;
     int canChange;
+    Domaine dom;
 } int_t;
 
 int_t grid[MAX_SIZE * MAX_SIZE];

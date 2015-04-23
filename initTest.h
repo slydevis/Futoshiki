@@ -15,6 +15,7 @@ void resetAll() {
     for(int i = 0; i < gridSize*gridSize; ++i) {
         grid[i].value = 0;
         grid[i].canChange = true;
+        grid[i].dom = NULL;
     }
 }
 void initContrainte1() {
@@ -174,5 +175,9 @@ void initBacktrackTest2() {
 
     grid[2].value = 5;
     grid[2].canChange = false;
+}
+
+void initTestDomaine() {
+    resetAll();
 }
 #endif /* __INITTEST_H__ */
