@@ -38,8 +38,50 @@ Domaine addDomaine(Domaine dom, int value) {
     return dom;
 }
 
-void removeDomaine(int pos) {
-    (void) pos;
+Domaine domaineAt(Domaine dom, int pos) {
+    
+    if(dom == NULL)
+        return NULL;
+
+    Domaine list = dom;
+
+    for(int i = 0; i < pos; ++i) {
+
+        if(list->next == NULL)
+            break;
+
+        list = list->next;
+    }
+
+    return list;
+}
+
+Domaine removeDomaine(Domaine dom, int pos) {
+    if(dom == NULL)
+        return NULL;
+ 
+    if(dom->next == NULL) {
+        free(dom);
+        return NULL;
+    }
+ 
+    Domaine previous = dom;
+    Domaine current = dom;
+    int i = 0;
+
+    while(i < pos) {
+        if(current->next == NULL)
+            break;
+
+        previous = current;
+        current = current->next;
+        ++i;
+    }
+
+    previous->next = current->next;
+    free(current);
+
+    return dom;
 }
 
 Domaine initDomaine(Domaine dom, int value) {
