@@ -21,6 +21,8 @@ void majContrainte (Contrainte contrainte) {
     }
 
     tailleTabContrainte += 1;
+    
+    /*
     void* res = realloc(tabContrainte, tailleTabContrainte * sizeof(Contrainte));
 
     if(res == NULL) {
@@ -29,7 +31,7 @@ void majContrainte (Contrainte contrainte) {
         perror("realloc() error");
         color(COLOR_WHITE);
         exit(1);
-    }
+    } */
 
     tabContrainte[tailleTabContrainte - 1] = contrainte;
 }

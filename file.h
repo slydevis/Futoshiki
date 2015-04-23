@@ -28,12 +28,10 @@ void gridLineManager(char* line, int nbLine) {
             }
 
             grid[nbLine * gridSize + i].dom = initDomaine(NULL, grid[nbLine * gridSize + i].value);
+            
+            printDomaine(grid[nbLine * gridSize + i].dom);
             printf("element n°%d\n", cpt);
             cpt++;
-
-            // grid[nbLine * gridSize + i].dom = dom;
-            // initDomaine(grid[nbLine * gridSize + i].dom, grid[nbLine * gridSize + i].value);
-            // printDomaine(grid[nbLine * gridSize + i].dom);
         }
         else
             i--;
