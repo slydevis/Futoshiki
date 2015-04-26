@@ -20,20 +20,29 @@ void majContrainte (Contrainte contrainte) {
         tabContrainte = calloc(1, sizeof(Contrainte));
     }
 
-    tailleTabContrainte += 1;
-    
-    /*
-    void* res = realloc(tabContrainte, tailleTabContrainte * sizeof(Contrainte));
+    Contrainte* tabContrainteSave = NULL;
+    tabContrainteSave = malloc(sizeof(struct Contrainte) * tailleTabContrainte);
 
-    if(res == NULL) {
-        free(tabContrainte);
-        color(COLOR_RED);
-        perror("realloc() error");
-        color(COLOR_WHITE);
-        exit(1);
-    } */
+    for(int i = 0; i < tailleTabContrainte; ++i) {
+        Contrainte saveBuff = tabContrainte[i];
+        tabContrainteSave[i] = saveBuff;
+    }
+    
+    tailleTabContrainte += 1;
+
+    free(tabContrainte);
+
+    tabContrainte = malloc(sizeof(struct Contrainte) * tailleTabContrainte);
+
+    for(int i = 0; i < tailleTabContrainte - 1; ++i) {
+        Contrainte buff = tabContrainteSave[i];
+        tabContrainte[i] = buff;
+    }
 
     tabContrainte[tailleTabContrainte - 1] = contrainte;
+
+    free(tabContrainteSave);
+    tabContrainteSave = NULL;
 }
 
 /* Initialise la contrainte */
