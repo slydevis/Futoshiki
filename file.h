@@ -61,7 +61,6 @@ void readGrid(const char* path) {
     }
 }
 
-// TODO : Ecrire la grille dans un fichier de log
 void writeGrid(char* buff) {
     char path[100];
 
@@ -70,10 +69,31 @@ void writeGrid(char* buff) {
 
     printf("Arrêt du programme -> Creation des logs : ");
 
-    color(COLOR_RED);
-    printf("Non implémenté\n");
-    //color(COLOR_GREEN);
-    //printf("OK\n");
+    FILE* file = fopen(path, "w+");
+
+    if(file == NULL) {
+        color(COLOR_RED);
+        printf("Erreur d'ouverture du fichier de sortie\n");        
+    }
+
+    int nbLigne = 0;
+    for(int i = 0; i < gridSize; ++i) {
+        fputs("\n", file);
+        for(int j = 0; j < gridSize; ++j) {
+            char* str = malloc(sizeof(char)* 100);
+            sprintf(str, "%5d", grid[nbLigne * gridSize + j].value);
+            fputs(str, file);
+            free(str);
+        }
+        nbLigne++;
+    }
+    
+    fputs("\n", file);
+
+    fclose(file);
+    
+    color(COLOR_GREEN);
+    printf("OK\n");
     color(COLOR_WHITE);
 
     printBeautifulGrid(COLOR_GREEN);
