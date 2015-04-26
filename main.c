@@ -229,13 +229,15 @@ int main(int argc, char* argv[]) {
         printf("\n===> TEST : backTrack() \n\n");
         runTest(backTrack, initBacktrackTest, true);
         runTest(backTrack, initBacktrackTest2, false);
-/*
+
         printf("\n===> TEST : structure domaine \n\n");
 
-        for(int i = 0; i < gridSize*gridSize; ++i)
+        for(int i = 0; i < 2; ++i) {
+            grid[i].dom = initDomaine(grid[i].dom, i);
             printDomaine(grid[i].dom);
-*/
-        #endif /* DEBUG */
+        }
+
+    #endif /* DEBUG */
 
     return 0;
 }
