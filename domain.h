@@ -61,6 +61,9 @@ Domaine removeDomaine(Domaine dom, int value) {
         return NULL;
  
     if(dom->next == NULL) {
+        if(dom->value != value)
+            return dom;
+
         free(dom);
         return NULL;
     }
@@ -70,12 +73,17 @@ Domaine removeDomaine(Domaine dom, int value) {
     int i = 0;
 
     while(current->value != value) {
+
         if(current->next == NULL)
             break;
-
         previous = current;
         current = current->next;
         ++i;
+    }
+
+    if(i == 0) {
+        free(previous);
+        return dom->next;
     }
 
     previous->next = current->next;

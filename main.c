@@ -81,6 +81,65 @@ int changerValeur()
     return -1;
 }
 
+int changerNValeur()
+{
+    // Cette case n'est pas initiliasée
+    if (grid[indice].value == 0)  {
+        grid[indice].value = 1;
+        noeud++;
+    }
+
+    // Evite de lancer de lancer plusieur fois la vérification = Gain de temps
+    int resultatCheck = checkFutoshiki(indice);
+
+    // Si le futoshiki n'est a ce point pas correcte, il faut changer les valeurs placées
+    if (resultatCheck >= 0 && grid[indice].canChange == true) {
+        // la valeur maximale est atteinte pour cette case
+        while (grid[indice].value == gridSize && grid[indice].canChange == true) {
+            // place cette valeur de nouveau a 0
+            grid[indice].value = 0;
+            // si indice == 0, nous avons essayé toutes les valeurs
+            if (indice != 0) {
+                indice--;
+                while (grid[indice].canChange == false) {
+                    if (indice != 0)
+                        indice--;
+                    else {
+                        color(COLOR_RED);
+                        printf ("\nPas de solution : %f\n", getTimer());
+                        printf("Nombre de noeuds parcouru %llu\n\n", noeud);
+                        color(COLOR_WHITE);
+                        return false;
+                    }
+                }
+            }
+            else {
+                stopChrono();
+                color(COLOR_RED);
+                printf ("\nPas de solution en %f\n", getTimer());
+                printf("Nombre de noeuds parcouru %llu\n\n", noeud);
+                color(COLOR_WHITE);
+                return false;
+            }
+        }
+
+        // incrémente la valeur de la case
+        grid[indice].value++;
+        noeud++;
+    }
+    else if (resultatCheck < 0 && indice == gridSize*gridSize -1) {
+        stopChrono();
+        color(COLOR_GREEN);
+        printf ("\tSolution trouvée en %f !\n", getTimer());
+        printf("\tNombre de noeuds parcouru %llu\n\n", noeud);
+        color(COLOR_WHITE);
+        return true;
+    }
+    else // on avance d'une case
+        indice++;
+
+    return -1;
+}
 /***********************************************************************************************************************
 * Renvoie -1 si il y a pas de problème sinon il renvoi l'indice où une des contrainte est violée
 * Par exemple si il y a deux fois le même chiffre dans la même colonne
@@ -135,36 +194,35 @@ int checkFutoshiki(int indice) {
     return -1;
 }
 
-void removeLineAndColumnDomain(int indice, int value) {
-    // Line verification
-    for(int i = indice - indice%gridSize; i < indice - indice%gridSize + gridSize; ++i)
-        grid[i].dom = removeDomaine(grid[i].dom, value);
-
-    // Column verification
-    for(int i = indice%gridSize; i < gridSize*gridSize; i += gridSize) {
-        if(i != indice)
-            grid[i].dom = removeDomaine(grid[i].dom, value);
-    }
-}
-
-void addLineAndColumnDomain(int indice, int value) {
-    // Line verification
-    for(int i = indice - indice%gridSize; i < indice - indice%gridSize + gridSize; ++i)
-        grid[i].dom = addDomaine(grid[i].dom, value);
-
-    // Column verification
-    for(int i = indice%gridSize; i < gridSize*gridSize; i += gridSize) {
-        if(i != indice)
-            grid[i].dom = addDomaine(grid[i].dom, value);
-    }
-}
-
 int backTrack() {
     int res = -1;
     indice = 0;
 
     while(res < 0) {
         res = changerValeur();
+
+        if(res == true) {
+            #ifndef DEBUG
+                //clearScreen();
+                printBeautifulGrid(COLOR_BLUE);
+            #endif
+            #ifdef DEBUG
+                printBeautifulGrid(COLOR_BLUE);
+                sleep(SLEEP_TIME);
+            #endif /* DEBUG */
+            return true;
+        }
+    }
+
+    return false;
+}
+
+int backTrackNaire() {
+    int res = -1;
+    indice = 0;
+
+    while(res < 0) {
+        res = changerNValeur();
 
         if(res == true) {
             #ifndef DEBUG
