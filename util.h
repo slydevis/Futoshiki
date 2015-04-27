@@ -155,54 +155,116 @@ void printBeautifulGrid(char* gridColor) {
     printf("\n");
 }
 
-void removeDomain(int v1, int v2, char contrainte) {
+int removeDomain(int v1, int v2, char contrainte) {
     switch(contrainte) {
         case '<' :
-        if(grid[v2].value == 0)
-            break;
+        case '^' :
+        
+        if(grid[v1].value == 0 && grid[v2].value == 0) {
+            grid[v1].dom = removeDomaine(grid[v1].dom, gridSize);
+            grid[v2].dom = removeDomaine(grid[v2].dom, 1);
+            return true;
+        }
 
-        for(int i = grid[v2].value; i < gridSize + 1; ++i) {
-            Domaine dom = grid[v1].dom;
-            grid[v1].dom = removeDomaine(dom, i);
+        if(grid[v1].value != 0 && grid[v2].value != 0)
+            return false;
+
+
+        if(grid[v1].value == 0) {
+            for(int i = grid[v2].value; i < gridSize + 1; ++i) {
+                Domaine dom = grid[v1].dom;
+                grid[v1].dom = removeDomaine(dom, i);
+            }            
         }
-  
-        for(int i = 0; i < grid[v1].value; ++i) {
-            Domaine dom = grid[v2].dom;
-            grid[v2].dom = removeDomaine(dom, i);
+
+        if(grid[v2].value == 0) {
+            for(int i = grid[v1].value; i > 0; --i) {
+                Domaine dom = grid[v2].dom;
+                grid[v2].dom = removeDomaine(dom, i);
+            }
         }
-        break;
+
+        return true;  
         case '>':
-        /*
-        for(int i = grid[v1].value; i < gridSize + 1; ++i) {
-            Domaine dom = grid[v2].dom;
-            grid[v2].dom = removeDomaine(dom, i);
-        }
-  
-        for(int i = 0; i < grid[v2].value; ++i) {
-            Domaine dom = grid[v1].dom;
-            grid[v1].dom = removeDomaine(dom, i);
-        }*/
-        break;
-        case '^':
-        printf("%d (%d) ^  %d (%d)\n", grid[v1].value, v1, grid[v2].value, v2);
-        break;
         case 'v':
-        printf("%d (%d) v  %d (%d)\n", grid[v1].value, v1, grid[v2].value, v2);
-        break;
+
+        if(grid[v1].value == 0 && grid[v2].value == 0) {
+            grid[v1].dom = removeDomaine(grid[v1].dom, 1);
+            grid[v2].dom = removeDomaine(grid[v2].dom, gridSize);
+        }
+            
+        if(grid[v1].value != 0 && grid[v2].value != 0)
+            return false;
+
+        if(grid[v1].value == 0) {
+            for(int i = grid[v2].value; i > 0; --i) {
+                Domaine dom = grid[v1].dom;
+                grid[v1].dom = removeDomaine(dom, i);
+            }
+        }
+
+        if(grid[v2].value == 0) {
+            for(int i = grid[v1].value; i < gridSize + 1; ++i) {
+                Domaine dom = grid[v2].dom;
+                grid[v2].dom = removeDomaine(dom, i);
+            }
+        }
+        return true;
+    }
+
+    return false;
+}
+
+void removeLineAndColumnDomain(int indice, int value) {
+    // Line verification
+    for(int i = indice - indice%gridSize; i < indice - indice%gridSize + gridSize; ++i) {
+      if(i != indice) {
+            grid[i].dom = removeDomaine(grid[i].dom, value);
+      }
+    }
+
+    // Column verification
+    for(int i = indice%gridSize; i < gridSize*gridSize; i += gridSize) {
+        if(i != indice)
+            grid[i].dom = removeDomaine(grid[i].dom, value);
+    }
+}
+
+void addLineAndColumnDomain(int indice, int value) {
+    // Line verification
+    for(int i = indice - indice%gridSize; i < indice - indice%gridSize + gridSize; ++i)
+        grid[i].dom = addDomaine(grid[i].dom, value);
+
+    // Column verification
+    for(int i = indice%gridSize; i < gridSize*gridSize; i += gridSize) {
+        if(i != indice)
+            grid[i].dom = addDomaine(grid[i].dom, value);
     }
 }
 
 void removeUselessDomain() {
+    int res = true;
     for(int i = 0; i < tailleTabContrainte; ++i) {
-        removeDomain(tabContrainte[i].v1, tabContrainte[i].v2, tabContrainte[i].contrainte);
+        res = removeDomain(tabContrainte[i].v1, tabContrainte[i].v2, tabContrainte[i].contrainte);
     }
+
+    for(int i = 0; i < gridSize * gridSize; ++i) {
+        Domaine dom = grid[i].dom;
+        if(dom != NULL && dom->next == NULL) {
+            removeLineAndColumnDomain(i, dom->value);
+        }
+    }
+
+    for(int i = 0; i < gridSize * gridSize; ++i)
+        printDomaine(grid[i].dom);
+    
 }
 
 /***********************************************************************************************************************
 * FONCTION UTIL
 ***********************************************************************************************************************/
 
-/*Efface la console sous linux */
+/* Efface la console sous linux */
 void clearScreen() { printf("\033[H\033[2J"); }
 
 #endif /* __UTIL_H__ */
