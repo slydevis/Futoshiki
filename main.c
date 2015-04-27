@@ -135,6 +135,30 @@ int checkFutoshiki(int indice) {
     return -1;
 }
 
+void removeLineAndColumnDomain(int indice, int value) {
+    // Line verification
+    for(int i = indice - indice%gridSize; i < indice - indice%gridSize + gridSize; ++i)
+        grid[i].dom = removeDomaine(grid[i].dom, value);
+
+    // Column verification
+    for(int i = indice%gridSize; i < gridSize*gridSize; i += gridSize) {
+        if(i != indice)
+            grid[i].dom = removeDomaine(grid[i].dom, value);
+    }
+}
+
+void addLineAndColumnDomain(int indice, int value) {
+    // Line verification
+    for(int i = indice - indice%gridSize; i < indice - indice%gridSize + gridSize; ++i)
+        grid[i].dom = addDomaine(grid[i].dom, value);
+
+    // Column verification
+    for(int i = indice%gridSize; i < gridSize*gridSize; i += gridSize) {
+        if(i != indice)
+            grid[i].dom = addDomaine(grid[i].dom, value);
+    }
+}
+
 int backTrack() {
     int res = -1;
     indice = 0;

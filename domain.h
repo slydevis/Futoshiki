@@ -40,7 +40,7 @@ Domaine addDomaine(Domaine dom, int value) {
 
 Domaine domaineAt(Domaine dom, int pos) {
     
-    if(dom == NULL)
+    if(dom == NULL || pos < 0)
         return NULL;
 
     Domaine list = dom;
@@ -56,7 +56,7 @@ Domaine domaineAt(Domaine dom, int pos) {
     return list;
 }
 
-Domaine removeDomaine(Domaine dom, int pos) {
+Domaine removeDomaine(Domaine dom, int value) {
     if(dom == NULL)
         return NULL;
  
@@ -69,7 +69,7 @@ Domaine removeDomaine(Domaine dom, int pos) {
     Domaine current = dom;
     int i = 0;
 
-    while(i < pos) {
+    while(current->value != value) {
         if(current->next == NULL)
             break;
 
@@ -79,8 +79,8 @@ Domaine removeDomaine(Domaine dom, int pos) {
     }
 
     previous->next = current->next;
-    free(current);
 
+    free(current);
     return dom;
 }
 
