@@ -230,22 +230,21 @@ void removeLineAndColumnDomain(int indice, int value) {
     }
 }
 
-void addLineAndColumnDomain(int indice, int value) {
+void addLineAndColumnDomain(int indice) {
     // Line verification
     for(int i = indice - indice%gridSize; i < indice - indice%gridSize + gridSize; ++i)
-        grid[i].dom = addDomaine(grid[i].dom, value);
+        grid[i].dom = addDomaine(grid[i].dom, grid[indice].value);
 
     // Column verification
     for(int i = indice%gridSize; i < gridSize*gridSize; i += gridSize) {
         if(i != indice)
-            grid[i].dom = addDomaine(grid[i].dom, value);
+            grid[i].dom = addDomaine(grid[i].dom, grid[indice].value);
     }
 }
 
 void removeUselessDomain() {
-    int res = true;
     for(int i = 0; i < tailleTabContrainte; ++i) {
-        res = removeDomain(tabContrainte[i].v1, tabContrainte[i].v2, tabContrainte[i].contrainte);
+        removeDomain(tabContrainte[i].v1, tabContrainte[i].v2, tabContrainte[i].contrainte);
     }
 
     for(int i = 0; i < gridSize * gridSize; ++i) {
@@ -253,11 +252,7 @@ void removeUselessDomain() {
         if(dom != NULL && dom->next == NULL) {
             removeLineAndColumnDomain(i, dom->value);
         }
-    }
-
-    for(int i = 0; i < gridSize * gridSize; ++i)
-        printDomaine(grid[i].dom);
-    
+    }    
 }
 
 /***********************************************************************************************************************
