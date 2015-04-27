@@ -160,6 +160,18 @@ int backTrack() {
 
 // TODO : Faire le tableau de domaine (tableau de liste chainée surement sera le plus simple)
 int forwardChecking() {
+    if(grid[indice].domain == null){
+      if (indice == gridSize*gridSize -1) {
+        stopChrono();
+        color(COLOR_GREEN);
+        printf ("\tSolution trouvée en %f !\n", getTimer());
+        printf("\tNombre de noeuds parcouru %llu\n\n", noeud);
+        color(COLOR_WHITE);
+        return true;
+      }
+      else
+      
+    }
     return false;
 }
 
