@@ -17,7 +17,7 @@ typedef Element* Domaine;
 Domaine addDomaine(Domaine dom, int value) {
     Domaine newElement = malloc(sizeof(Domaine));
 
-    // Ajout un fin de liste
+    // Ajout en fin de liste
 
     if(newElement != NULL) {
         newElement->value = value;
