@@ -38,10 +38,10 @@ Domaine addDomaine(Domaine dom, int value) {
     return dom;
 }
 
-Domaine domaineAt(Domaine dom, int pos) {
+int domaineAt(Domaine dom, int pos) {
     
     if(dom == NULL || pos < 0)
-        return NULL;
+        return -1;
 
     Domaine list = dom;
 
@@ -53,7 +53,7 @@ Domaine domaineAt(Domaine dom, int pos) {
         list = list->next;
     }
 
-    return list;
+    return list->value;
 }
 
 Domaine removeDomaine(Domaine dom, int value) {
