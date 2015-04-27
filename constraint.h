@@ -3,15 +3,7 @@
 
 #include "util.h"
 
-struct Contrainte* tabContrainte = NULL;
-int tailleTabContrainte = 0;
 int posContrainte = 0;
-
-typedef struct Contrainte{
-    int v1, v2;
-    char contrainte;
-} Contrainte;
-
 
 /* Met a jour la taille du tableau et ajoute la nouvelle contrainte */
 void majContrainte (Contrainte contrainte) {

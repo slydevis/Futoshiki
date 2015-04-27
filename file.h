@@ -59,6 +59,8 @@ void readGrid(const char* path) {
 
         fclose(file);
     }
+
+    removeUselessDomain();
 }
 
 void writeGrid(char* buff) {

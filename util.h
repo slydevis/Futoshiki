@@ -25,6 +25,15 @@
 clock_t debut;
 clock_t fin;
 
+struct Contrainte* tabContrainte = NULL;
+int tailleTabContrainte = 0;
+
+typedef struct Contrainte{
+    int v1, v2;
+    char contrainte;
+} Contrainte;
+
+
 void writeGrid(char* path);
 
 // Handler if SIGINT
@@ -144,6 +153,49 @@ void printBeautifulGrid(char* gridColor) {
     printf("    ");
 
     printf("\n");
+}
+
+void removeDomain(int v1, int v2, char contrainte) {
+    switch(contrainte) {
+        case '<' :
+        if(grid[v2].value == 0)
+            break;
+
+        for(int i = grid[v2].value; i < gridSize + 1; ++i) {
+            Domaine dom = grid[v1].dom;
+            grid[v1].dom = removeDomaine(dom, i);
+        }
+  
+        for(int i = 0; i < grid[v1].value; ++i) {
+            Domaine dom = grid[v2].dom;
+            grid[v2].dom = removeDomaine(dom, i);
+        }
+        break;
+        case '>':
+        /*
+        for(int i = grid[v1].value; i < gridSize + 1; ++i) {
+            Domaine dom = grid[v2].dom;
+            grid[v2].dom = removeDomaine(dom, i);
+        }
+  
+        for(int i = 0; i < grid[v2].value; ++i) {
+            Domaine dom = grid[v1].dom;
+            grid[v1].dom = removeDomaine(dom, i);
+        }*/
+        break;
+        case '^':
+        printf("%d (%d) ^  %d (%d)\n", grid[v1].value, v1, grid[v2].value, v2);
+        break;
+        case 'v':
+        printf("%d (%d) v  %d (%d)\n", grid[v1].value, v1, grid[v2].value, v2);
+        break;
+    }
+}
+
+void removeUselessDomain() {
+    for(int i = 0; i < tailleTabContrainte; ++i) {
+        removeDomain(tabContrainte[i].v1, tabContrainte[i].v2, tabContrainte[i].contrainte);
+    }
 }
 
 /***********************************************************************************************************************
