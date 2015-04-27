@@ -160,8 +160,9 @@ int backTrack() {
 
 // TODO : Faire le tableau de domaine (tableau de liste chainée surement sera le plus simple)
 int forwardChecking() {
-    if(grid[indice].domain == null){
+    if(grid[indice].domain == null){     
       if (indice == gridSize*gridSize -1) {
+        /* Nous avons trouvé une solution */
         stopChrono();
         color(COLOR_GREEN);
         printf ("\tSolution trouvée en %f !\n", getTimer());
@@ -169,8 +170,37 @@ int forwardChecking() {
         color(COLOR_WHITE);
         return true;
       }
-      else
-      
+      else if (indice != 0) {
+        /* Pas de solution pour le moment */
+        rendreDomaine(indice);
+        grid[indice].value = 0;
+        indice--;
+        while (grid[indice].canChange == false) {
+            if (indice != 0)
+                indice--;
+            else {
+                color(COLOR_RED);
+                printf ("\nPas de solution : %f\n", getTimer());
+                printf("Nombre de noeuds parcouru %llu\n\n", noeud);
+                color(COLOR_WHITE);
+                return false;
+            }
+        }
+      }
+      else {
+          stopChrono();
+          color(COLOR_RED);
+          printf ("\nPas de solution en %f\n", getTimer());
+          printf("Nombre de noeuds parcouru %llu\n\n", noeud);
+          color(COLOR_WHITE);
+          return false;
+      }     
+    }
+    else{
+      grid[indice].value = grid[indice].domain.getDomain();
+      removeDomaine();
+      indice++
+      return false;
     }
     return false;
 }
