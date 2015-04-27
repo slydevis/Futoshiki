@@ -221,8 +221,8 @@ int forwardChecking() {
       }     
     }
     else{
-      grid[indice].value = grid[indice].domain.getDomain();
-      removeDomaine();
+      grid[indice].value = domaineAt(grid[indice].domain);
+      removeDomaine(indice);
       indice++
       return false;
     }
