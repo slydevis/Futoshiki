@@ -67,7 +67,7 @@ Domaine removeDomaine(Domaine dom, int value) {
         free(dom);
         return NULL;
     }
- 
+
     Domaine previous = dom;
     Domaine current = dom;
     int i = 0;

@@ -12,6 +12,7 @@
 #include "file.h"
 
 int indice = 0;
+int ligne = 0;
 unsigned long long noeud = 0;
 
 /***********************************************************************************************************************
@@ -83,14 +84,33 @@ int changerValeur()
 
 int changerNValeur()
 {
-    // Cette case n'est pas initiliasée
-    if (grid[indice].value == 0)  {
-        grid[indice].value = 1;
-        noeud++;
+    // Initialisation de la première ligne    
+    if(ligne == 0) {
+        for(int i = 0; i < gridSize; ++i) {
+            if(grid[i].canChange == true) {
+                grid[i].value = grid[i].value + 1;
+                for(int j = 0; j < gridSize;) {
+                    if(i != j && grid[j].value != 0 && grid[j].value == grid[i].value) {
+                        grid[i].value = grid[i].value + 1;
+                        j = 0;
+                        continue;
+                    }
+                    ++j;
+                }
+            }
+        }
     }
 
-    // Evite de lancer de lancer plusieur fois la vérification = Gain de temps
     int resultatCheck = checkFutoshiki(indice);
+
+    if(resultatCheck) {
+
+    }
+
+    printBeautifulGrid(COLOR_BLUE);
+
+    return false;
+/*
 
     // Si le futoshiki n'est a ce point pas correcte, il faut changer les valeurs placées
     if (resultatCheck >= 0 && grid[indice].canChange == true) {
@@ -139,6 +159,7 @@ int changerNValeur()
         indice++;
 
     return -1;
+*/
 }
 /***********************************************************************************************************************
 * Renvoie -1 si il y a pas de problème sinon il renvoi l'indice où une des contrainte est violée
@@ -242,48 +263,49 @@ int backTrackNaire() {
 
 // TODO : Faire le tableau de domaine (tableau de liste chainée surement sera le plus simple)
 int forwardChecking() {
-    if(grid[indice].domain == null){     
-      if (indice == gridSize*gridSize -1) {
-        /* Nous avons trouvé une solution */
-        stopChrono();
-        color(COLOR_GREEN);
-        printf ("\tSolution trouvée en %f !\n", getTimer());
-        printf("\tNombre de noeuds parcouru %llu\n\n", noeud);
-        color(COLOR_WHITE);
-        return true;
-      }
-      else if (indice != 0) {
-        /* Pas de solution pour le moment */
-        rendreDomaine(indice);
-        grid[indice].value = 0;
-        indice--;
-        while (grid[indice].canChange == false) {
-            if (indice != 0)
-                indice--;
-            else {
-                color(COLOR_RED);
-                printf ("\nPas de solution : %f\n", getTimer());
-                printf("Nombre de noeuds parcouru %llu\n\n", noeud);
-                color(COLOR_WHITE);
-                return false;
-            }
-        }
-      }
-      else {
-          stopChrono();
-          color(COLOR_RED);
-          printf ("\nPas de solution en %f\n", getTimer());
-          printf("Nombre de noeuds parcouru %llu\n\n", noeud);
-          color(COLOR_WHITE);
-          return false;
-      }     
-    }
-    else{
-      grid[indice].value = domaineAt(grid[indice].domain);
-      removeDomaine(indice);
-      indice++
-      return false;
-    }
+    // if(grid[indice].domain == null){     
+    //   if (indice == gridSize*gridSize -1) {
+    //     /* Nous avons trouvé une solution */
+    //     stopChrono();
+    //     color(COLOR_GREEN);
+    //     printf ("\tSolution trouvée en %f !\n", getTimer());
+    //     printf("\tNombre de noeuds parcouru %llu\n\n", noeud);
+    //     color(COLOR_WHITE);
+    //     return true;
+    //   }
+    //   else if (indice != 0) {
+    //     /* Pas de solution pour le moment */
+    //     rendreDomaine(indice);
+    //     grid[indice].value = 0;
+    //     indice--;
+    //     while (grid[indice].canChange == false) {
+    //         if (indice != 0)
+    //             indice--;
+    //         else {
+    //             color(COLOR_RED);
+    //             printf ("\nPas de solution : %f\n", getTimer());
+    //             printf("Nombre de noeuds parcouru %llu\n\n", noeud);
+    //             color(COLOR_WHITE);
+    //             return false;
+    //         }
+    //     }
+    //   }
+    //   else {
+    //       stopChrono();
+    //       color(COLOR_RED);
+    //       printf ("\nPas de solution en %f\n", getTimer());
+    //       printf("Nombre de noeuds parcouru %llu\n\n", noeud);
+    //       color(COLOR_WHITE);
+    //       return false;
+    //   }     
+    // }
+    // else {
+    //   grid[indice].value = domaineAt(grid[indice].domain);
+    //   removeDomaine(indice);
+    //   indice++
+    //   return false;
+    // }
+
     return false;
 }
 
@@ -307,7 +329,7 @@ int main(int argc, char* argv[]) {
 
     readGrid(argv[1]);
 
-    resolveFutoshiki(backTrack);
+    resolveFutoshiki(backTrackNaire);
 
 /*
     #ifndef DEBUG
