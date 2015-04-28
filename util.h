@@ -215,11 +215,17 @@ int removeDomain(int v1, int v2, char contrainte) {
     return false;
 }
 
-void removeLineAndColumnDomain(int indice, int value) {
+int removeLineAndColumnDomain(int indice, int value) {
+
+    int res = true;
+
     // Line verification
     for(int i = indice - indice%gridSize; i < indice - indice%gridSize + gridSize; ++i) {
       if(i != indice) {
             grid[i].dom = removeDomaine(grid[i].dom, value);
+            
+            if(grid[i].dom == NULL)
+                res = false;
       }
     }
 
@@ -227,7 +233,12 @@ void removeLineAndColumnDomain(int indice, int value) {
     for(int i = indice%gridSize; i < gridSize*gridSize; i += gridSize) {
         if(i != indice)
             grid[i].dom = removeDomaine(grid[i].dom, value);
+
+        if(grid[i].dom == NULL)
+            res = false;
     }
+
+    return res;
 }
 
 void addLineAndColumnDomain(int indice) {
