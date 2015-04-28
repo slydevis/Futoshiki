@@ -242,49 +242,60 @@ int backTrackNaire() {
 
 // TODO : Faire le tableau de domaine (tableau de liste chainée surement sera le plus simple)
 int forwardChecking() {
-    if(grid[indice].domain == null){     
-      if (indice == gridSize*gridSize -1) {
-        /* Nous avons trouvé une solution */
-        stopChrono();
-        color(COLOR_GREEN);
-        printf ("\tSolution trouvée en %f !\n", getTimer());
-        printf("\tNombre de noeuds parcouru %llu\n\n", noeud);
-        color(COLOR_WHITE);
-        return true;
-      }
-      else if (indice != 0) {
-        /* Pas de solution pour le moment */
-        rendreDomaine(indice);
-        grid[indice].value = 0;
+  if (indice == gridSize*gridSize -1 && grid[indice].dom != NULL) {
+    /* Nous avons trouvé une solution */
+    stopChrono();
+    color(COLOR_GREEN);
+    printf ("\tSolution trouvée en %f !\n", getTimer());
+    printf("\tNombre de noeuds parcouru %llu\n\n", noeud);
+    color(COLOR_WHITE);
+    return true;
+  }
+  else if(grid[indice].dom != NULL)
+  {
+    grid[indice].value = grid[indice].dom->value;
+    /* Pas de solution pour le moment */
+    if(removeLineAndColumnDomain(indice, grid[indice].value) == false)
+    {
+      removeDomaine(grid[indice].dom, grid[git pulindice].value);
+      addLineAndColumnDomain(indice, grid[indice].value);
+    }
+    else if(grid[indice].dom != NULL && grid[indice].canChange == true)
+    {
+      addLineAndColumnDomain(indice, grid[indice].value);
+      grid[indice].dom = grid[indice].dom->value;
+    }
+    else
+    {
+      /* La valeur est vide, on retourne 
+      à la dernière valeur que l'on peut changer */
+      while(grid[indice].canChange == false)
+      {
         indice--;
-        while (grid[indice].canChange == false) {
-            if (indice != 0)
-                indice--;
-            else {
-                color(COLOR_RED);
-                printf ("\nPas de solution : %f\n", getTimer());
-                printf("Nombre de noeuds parcouru %llu\n\n", noeud);
-                color(COLOR_WHITE);
-                return false;
-            }
-        }
-      }
-      else {
+        if(indice == 0)
+        {
           stopChrono();
           color(COLOR_RED);
           printf ("\nPas de solution en %f\n", getTimer());
           printf("Nombre de noeuds parcouru %llu\n\n", noeud);
           color(COLOR_WHITE);
-          return false;
-      }     
-    }
-    else{
-      grid[indice].value = domaineAt(grid[indice].domain);
-      removeDomaine(indice);
-      indice++
-      return false;
-    }
+          return false;   
+        }
+      }
+      removeDomaine(grid[indice].dom, grid[indice].value);
+      grid[indice].dom = grid[indice].dom->value;
+    }                       
+    /* to be continued */
+  }
+  else
+  {
+    stopChrono();
+    color(COLOR_RED);
+    printf ("\nPas de solution en %f\n", getTimer());
+    printf("Nombre de noeuds parcouru %llu\n\n", noeud);
+    color(COLOR_WHITE);
     return false;
+  } 
 }
 
 /* Retourne -1 si aucune solution, dans le cas ou il existe une solution renvoie 1 */
