@@ -278,12 +278,12 @@ int forwardChecking() {
     /* Pas de solution pour le moment */
     if(removeLineAndColumnDomain(indice, grid[indice].value) == false)
     {
-      removeDomaine(grid[indice].dom, grid[git pulindice].value);
-      addLineAndColumnDomain(indice, grid[indice].value);
+      removeDomaine(grid[indice].dom, grid[indice].value);
+      addLineAndColumnDomain(indice);
     }
     else if(grid[indice].dom != NULL && grid[indice].canChange == true)
     {
-      addLineAndColumnDomain(indice, grid[indice].value);
+      addLineAndColumnDomain(indice);
       grid[indice].dom = grid[indice].dom->value;
     }
     else
