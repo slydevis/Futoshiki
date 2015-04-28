@@ -56,22 +56,6 @@ int domaineAt(Domaine dom, int pos) {
     return list->value;
 }
 
-int hasDomaine(Domaine dom, int value) {
-    Domaine list = dom;
-
-    if(dom == NULL)
-        return false;
-
-    while(list->next != NULL) {
-        
-        if(list->value == value)
-            return true;
-
-        list = list->next;
-    }
-
-    return false;
-}
 Domaine removeDomaine(Domaine dom, int value) {
     if(dom == NULL)
         return NULL;
@@ -84,9 +68,6 @@ Domaine removeDomaine(Domaine dom, int value) {
         return NULL;
     }
  
-    if(hasDomaine(dom, value) == false)
-        return dom;
-    
     Domaine previous = dom;
     Domaine current = dom;
     int i = 0;
@@ -106,8 +87,8 @@ Domaine removeDomaine(Domaine dom, int value) {
     }
 
     previous->next = current->next;
-    free(current);
 
+    free(current);
     return dom;
 }
 
