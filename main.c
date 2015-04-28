@@ -12,6 +12,7 @@
 #include "file.h"
 
 int indice = 0;
+int ligne = 0;
 unsigned long long noeud = 0;
 
 /***********************************************************************************************************************
@@ -83,14 +84,33 @@ int changerValeur()
 
 int changerNValeur()
 {
-    // Cette case n'est pas initiliasée
-    if (grid[indice].value == 0)  {
-        grid[indice].value = 1;
-        noeud++;
+    // Initialisation de la première ligne    
+    if(ligne == 0) {
+        for(int i = 0; i < gridSize; ++i) {
+            if(grid[i].canChange == true) {
+                grid[i].value = grid[i].value + 1;
+                for(int j = 0; j < gridSize;) {
+                    if(i != j && grid[j].value != 0 && grid[j].value == grid[i].value) {
+                        grid[i].value = grid[i].value + 1;
+                        j = 0;
+                        continue;
+                    }
+                    ++j;
+                }
+            }
+        }
     }
 
-    // Evite de lancer de lancer plusieur fois la vérification = Gain de temps
     int resultatCheck = checkFutoshiki(indice);
+
+    if(resultatCheck) {
+
+    }
+
+    printBeautifulGrid(COLOR_BLUE);
+
+    return false;
+/*
 
     // Si le futoshiki n'est a ce point pas correcte, il faut changer les valeurs placées
     if (resultatCheck >= 0 && grid[indice].canChange == true) {
@@ -139,6 +159,7 @@ int changerNValeur()
         indice++;
 
     return -1;
+*/
 }
 /***********************************************************************************************************************
 * Renvoie -1 si il y a pas de problème sinon il renvoi l'indice où une des contrainte est violée
@@ -318,7 +339,7 @@ int main(int argc, char* argv[]) {
 
     readGrid(argv[1]);
 
-    resolveFutoshiki(backTrack);
+    resolveFutoshiki(backTrackNaire);
 
 /*
     #ifndef DEBUG
