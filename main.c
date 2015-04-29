@@ -261,9 +261,10 @@ int backTrackNaire() {
     return false;
 }
 
-// TODO : Faire le tableau de domaine (tableau de liste chainée surement sera le plus simple)
+int changerDomaine();
+
 int forwardChecking() {
-  int res = false;
+    int res = false;
     indice = 0;
 
     while(res == false) {
@@ -286,11 +287,12 @@ int forwardChecking() {
 }
 
 int changerDomaine(){
-printf("Les domaines du COURANT sont : \n");
-printDomaine(grid[indice].dom);
-printf("Les domaines du SUIVANT sont : \n");
-printDomaine(grid[indice+1].dom);
-  if (indice == gridSize*gridSize -1 && grid[indice].dom != NULL) {
+    printf("Les domaines du COURANT sont : \n");
+    printDomaine(grid[indice].dom);
+    printf("Les domaines du SUIVANT sont : \n");
+    printDomaine(grid[indice+1].dom);
+
+   if (indice == gridSize*gridSize -1 && grid[indice].dom != NULL) {
     printf("hey mais c'est bon! \n");
     /* Nous avons trouvé une solution */
     stopChrono();
@@ -301,7 +303,7 @@ printDomaine(grid[indice+1].dom);
     return true;    
   }
   else if(grid[indice].dom != NULL)
-  {    
+  {
     printf("c'est pas bon pour le moment \n");
     if(grid[indice].canChange == true)
       noeud++;
@@ -323,7 +325,7 @@ printDomaine(grid[indice+1].dom);
     if(grid[indice].dom != NULL && grid[indice].canChange == true)
     {
       addLineAndColumnDomain(indice);
-      grid[indice].dom = grid[indice].dom->value;
+      grid[indice].value = grid[indice].dom->value;
     }
     else
     {
@@ -343,7 +345,7 @@ printDomaine(grid[indice+1].dom);
         }
       }
       removeDomaine(grid[indice].dom, grid[indice].value);
-      grid[indice].dom = grid[indice].dom->value;
+      grid[indice].value = grid[indice].dom->value;
       noeud++;
     }                     
     return false;  
@@ -358,6 +360,8 @@ printDomaine(grid[indice+1].dom);
     color(COLOR_WHITE);
     return false;
   } 
+
+  return false;
 }
 
 /* Retourne -1 si aucune solution, dans le cas ou il existe une solution renvoie 1 */
