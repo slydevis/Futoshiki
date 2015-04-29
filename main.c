@@ -263,25 +263,64 @@ int backTrackNaire() {
 
 // TODO : Faire le tableau de domaine (tableau de liste chainée surement sera le plus simple)
 int forwardChecking() {
+  int res = false;
+    indice = 0;
+
+    while(res == false) {
+        res = changerDomaine();
+
+        if(res == true) {
+            #ifndef DEBUG
+                //clearScreen();
+                printBeautifulGrid(COLOR_BLUE);
+            #endif
+            #ifdef DEBUG
+                printBeautifulGrid(COLOR_BLUE);
+                sleep(SLEEP_TIME);
+            #endif /* DEBUG */
+            return true;
+        }
+    }
+    printf("Wallah \n");
+    return false;
+}
+
+int changerDomaine(){
+printf("Les domaines du COURANT sont : \n");
+printDomaine(grid[indice].dom);
+printf("Les domaines du SUIVANT sont : \n");
+printDomaine(grid[indice+1].dom);
   if (indice == gridSize*gridSize -1 && grid[indice].dom != NULL) {
+    printf("hey mais c'est bon! \n");
     /* Nous avons trouvé une solution */
     stopChrono();
     color(COLOR_GREEN);
     printf ("\tSolution trouvée en %f !\n", getTimer());
     printf("\tNombre de noeuds parcouru %llu\n\n", noeud);
     color(COLOR_WHITE);
-    return true;
+    return true;    
   }
   else if(grid[indice].dom != NULL)
-  {
+  {    
+    printf("c'est pas bon pour le moment \n");
+    if(grid[indice].canChange == true)
+      noeud++;
+      
     grid[indice].value = grid[indice].dom->value;
+    printf("J'ai placé la valeur %d \n", grid[indice].value);
     /* Pas de solution pour le moment */
     if(removeLineAndColumnDomain(indice, grid[indice].value) == false)
     {
       removeDomaine(grid[indice].dom, grid[indice].value);
       addLineAndColumnDomain(indice);
     }
-    else if(grid[indice].dom != NULL && grid[indice].canChange == true)
+    else
+    {
+      indice++;
+      return false;
+    }
+    
+    if(grid[indice].dom != NULL && grid[indice].canChange == true)
     {
       addLineAndColumnDomain(indice);
       grid[indice].dom = grid[indice].dom->value;
@@ -305,7 +344,9 @@ int forwardChecking() {
       }
       removeDomaine(grid[indice].dom, grid[indice].value);
       grid[indice].dom = grid[indice].dom->value;
-    }                       
+      noeud++;
+    }                     
+    return false;  
     /* to be continued */
   }
   else
@@ -339,7 +380,8 @@ int main(int argc, char* argv[]) {
 
     readGrid(argv[1]);
 
-    resolveFutoshiki(backTrackNaire);
+    resolveFutoshiki(forwardChecking);
+    printf("Et c'est terminé \n");
 
 /*
     #ifndef DEBUG
