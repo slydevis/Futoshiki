@@ -307,7 +307,7 @@ printDomaine(grid[indice+1].dom);
       noeud++;
       
     grid[indice].value = grid[indice].dom->value;
-    printf("J'ai placé la valeur %d \n", grid[indice].value);
+    printf("J'ai placé la valeur %d \n\n", grid[indice].value);
     /* Pas de solution pour le moment */
     if(removeLineAndColumnDomain(indice, grid[indice].value) == false)
     {
