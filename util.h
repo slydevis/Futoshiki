@@ -159,10 +159,11 @@ int removeDomain(int v1, int v2, char contrainte) {
     switch(contrainte) {
         case '<' :
         case '^' :
-        
         if(grid[v1].value == 0 && grid[v2].value == 0) {
             grid[v1].dom = removeDomaine(grid[v1].dom, gridSize);
+            // printf("J'enleve sur %d la valeur %d %d\n", v1, gridSize, __LINE__);
             grid[v2].dom = removeDomaine(grid[v2].dom, 1);
+            // printf("J'enleve sur %d la valeur %d %d\n", v2, 1, __LINE__);
             return true;
         }
 
@@ -174,6 +175,7 @@ int removeDomain(int v1, int v2, char contrainte) {
             for(int i = grid[v2].value; i < gridSize + 1; ++i) {
                 Domaine dom = grid[v1].dom;
                 grid[v1].dom = removeDomaine(dom, i);
+                // printf("J'enleve sur %d la valeur %d %d\n", v1, i, __LINE__);
             }            
         }
 
@@ -181,16 +183,19 @@ int removeDomain(int v1, int v2, char contrainte) {
             for(int i = grid[v1].value; i > 0; --i) {
                 Domaine dom = grid[v2].dom;
                 grid[v2].dom = removeDomaine(dom, i);
+                // printf("J'enleve sur %d la valeur %d %d\n", v2, i, __LINE__);
             }
         }
 
         return true;  
         case '>':
         case 'v':
-
         if(grid[v1].value == 0 && grid[v2].value == 0) {
             grid[v1].dom = removeDomaine(grid[v1].dom, 1);
             grid[v2].dom = removeDomaine(grid[v2].dom, gridSize);
+            // printf("J'enleve sur %d la valeur %d %d\n", v1, 1, __LINE__);
+            // printf("J'enleve sur %d la valeur %d %d\n", v2, gridSize, __LINE__);
+            return true;
         }
             
         if(grid[v1].value != 0 && grid[v2].value != 0)
@@ -200,13 +205,15 @@ int removeDomain(int v1, int v2, char contrainte) {
             for(int i = grid[v2].value; i > 0; --i) {
                 Domaine dom = grid[v1].dom;
                 grid[v1].dom = removeDomaine(dom, i);
+                // printf("J'enleve sur %d la valeur %d %d\n", v1, i, __LINE__);
             }
         }
 
         if(grid[v2].value == 0) {
-            for(int i = grid[v1].value; i < gridSize + 1; ++i) {
+            for(int i = grid[v1].value; i < gridSize; ++i) {
                 Domaine dom = grid[v2].dom;
                 grid[v2].dom = removeDomaine(dom, i);
+                // printf("J'enleve sur %d la valeur %d %d\n", v2, i, __LINE__);
             }
         }
         return true;
@@ -255,15 +262,21 @@ void addLineAndColumnDomain(int indice) {
 
 void removeUselessDomain() {
     for(int i = 0; i < tailleTabContrainte; ++i) {
+    //    printf("i == %d\n", i);
         removeDomain(tabContrainte[i].v1, tabContrainte[i].v2, tabContrainte[i].contrainte);
+     //   printf("%d ==>\n", tabContrainte[i].v1);
+     //   printDomaine(grid[tabContrainte[i].v1].dom);
+     //   printf("%d ==>\n", tabContrainte[i].v2);
+     //   printDomaine(grid[tabContrainte[i].v2].dom);
+     //   sleep(3);
     }
-
+    
     for(int i = 0; i < gridSize * gridSize; ++i) {
         Domaine dom = grid[i].dom;
         if(dom != NULL && dom->next == NULL) {
             removeLineAndColumnDomain(i, dom->value);
         }
-    }    
+    }
 }
 
 /***********************************************************************************************************************
