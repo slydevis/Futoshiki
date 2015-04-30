@@ -282,13 +282,11 @@ int forwardChecking() {
             return true;
         }
     }
-
-    printf("Wallah \n");
     return false;
 }
 
 int changerDomaine() {
-    if (indice == gridSize*gridSize - 1 && grid[indice].dom != NULL) {
+    if (indice == gridSize*gridSize) {
         printf("hey mais c'est bon! \n");
         /* Nous avons trouvé une solution */
         stopChrono();
@@ -297,66 +295,72 @@ int changerDomaine() {
         printf("\tNombre de noeuds parcouru %llu\n\n", noeud);
         color(COLOR_WHITE);
         return true;
-    }
-    else if(grid[indice].dom != NULL) {
-        
-        printf("c'est pas bon pour le moment \n");
-        
-        if(grid[indice].canChange == true)
-            noeud++;
-        else {
-            indice++;
-            return -1;
-        }  
+    }   
+    else if(grid[indice].dom != NULL) {       
+    int k;
+      for(k = 0; k < gridSize * gridSize -1; ++k)
+      {
+        if(grid[k].dom == NULL)
+          printf("Domaine de %d vaut null\n", k);
+      }
 
-        grid[indice].value = grid[indice].dom->value;
-        printf("J'ai placé la valeur %d \n\n", grid[indice].value);
-        
-        /* Pas de solution pour le moment */
-        if(removeLineAndColumnDomain(indice, grid[indice].value) == false) {
-        //    removeDomaine(grid[indice].dom, grid[indice].value);
-            addLineAndColumnDomain(indice);
-        }
-        else {
-            indice++;
-            return -1;
-        }
+      if(grid[indice].canChange == true)
+          noeud++;
+      else {
+          indice++;
+          return -1;
+      }  
 
-        if(grid[indice].dom != NULL && grid[indice].canChange == true) {
-            addLineAndColumnDomain(indice);
-            grid[indice].value = grid[indice].dom->value;
-        }
-        else {
-            /* La valeur est vide, on retourne 
-               à la dernière valeur que l'on peut changer */
-            while(grid[indice].canChange == false) {
-                indice--;
-                if(indice == 0) {
-                  stopChrono();
-                  color(COLOR_RED);
-                  printf ("\nPas de solution en %f\n", getTimer());
-                  printf("Nombre de noeuds parcouru %llu\n\n", noeud);
-                  color(COLOR_WHITE);
-                  return false;   
-                }
-            }
-            removeDomaine(grid[indice].dom, grid[indice].value);
-            grid[indice].value = grid[indice].dom->value;
-            noeud++;
-        }                     
-        return -1;  
-        /* to be continued */
-    }
-    else {
-        stopChrono();
-        color(COLOR_RED);
-        printf ("\nPas de solution en %f\n", getTimer());
-        printf("Nombre de noeuds parcouru %llu\n\n", noeud);
-        color(COLOR_WHITE);
-        return false;
-    } 
+      grid[indice].value = grid[indice].dom->value;
+      printf("J'ai placé la valeur %d \n", grid[indice].value);
+      
+      /* Pas de solution pour le moment */
+      if(removeLineAndColumnDomain(indice, grid[indice].value) == false) {
+      printf("retrait valeur Echec\n\n");
+      //   removeDomaine(grid[indice].dom, grid[indice].value);
+          addLineAndColumnDomain(indice);
+      }
+      else {
+          printf("retrait valeur bon\n\n");
+          indice++;
+          return -1;
+      }
 
-    return -1;
+      if(grid[indice].dom != NULL && grid[indice].canChange == true) {
+          addLineAndColumnDomain(indice);
+          grid[indice].value = grid[indice].dom->value;
+      }
+      else {
+          /* La valeur est vide, on retourne 
+             à la dernière valeur que l'on peut changer */
+          while(grid[indice].canChange == false) {
+              indice--;
+              if(indice == 0) {
+                stopChrono();
+                color(COLOR_RED);
+                printf ("\nPas de solution en %f\n", getTimer());
+                printf("Nombre de noeuds parcouru %llu\n\n", noeud);
+                color(COLOR_WHITE);
+                return false;   
+              }
+          }
+          removeDomaine(grid[indice].dom, grid[indice].value);
+          grid[indice].value = grid[indice].dom->value;
+          noeud++;
+      }                     
+      return -1;  
+      /* to be continued */
+  }
+  else {
+      stopChrono();
+      color(COLOR_RED);
+      printf ("\nPas de solution en %f\n", getTimer());
+      printf("Nombre de noeuds parcouru %llu\n\n", noeud);
+      color(COLOR_WHITE);
+      return false;
+  } 
+
+  return -1;
 }
 
 /* Retourne -1 si aucune solution, dans le cas ou il existe une solution renvoie 1 */
