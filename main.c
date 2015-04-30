@@ -277,7 +277,7 @@ void resolveFutoshiki(int (*f)()) {
 
 int main(int argc, char* argv[]) {
 
-    if((argc - 1) != 1) {
+    if((argc - 1) != 2) {
         color(COLOR_RED);
         printf("Erreur d'argument\n");
         color(COLOR_WHITE);
@@ -290,8 +290,12 @@ int main(int argc, char* argv[]) {
 
     path = argv[1];
 
-    resolveFutoshiki(backTrack);
-    resolveFutoshiki(forwardChecking);
+    if(strcmp("FC", argv[2]) == 0)
+        resolveFutoshiki(forwardChecking);
+    else if(strcmp("BT", argv[2]) == 0)
+        resolveFutoshiki(backTrack);
+    else
+        resolveFutoshiki(backTrack);
 
     /* Lancement de tous les tests unitaires (Avec l'option cmake DEBUG seulement) */
     #ifdef DEBUG
