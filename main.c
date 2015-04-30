@@ -261,30 +261,6 @@ int backTrackNaire() {
     return false;
 }
 
-int changerDomaine();
-
-int forwardChecking() {
-    int res = -1;
-    indice = 0;
-
-    while(res < 0) {
-        res = changerDomaine();
-
-        if(res == true) {
-            #ifndef DEBUG
-                //clearScreen();
-                printBeautifulGrid(COLOR_BLUE);
-            #endif
-            #ifdef DEBUG
-                printBeautifulGrid(COLOR_BLUE);
-                sleep(SLEEP_TIME);
-            #endif /* DEBUG */
-            return true;
-        }
-    }
-    return false;
-}
-
 int changerDomaine() {
     if (indice == gridSize*gridSize) {
         printf("hey mais c'est bon! \n");
@@ -298,11 +274,13 @@ int changerDomaine() {
     }   
     else if(grid[indice].dom != NULL) {       
     int k;
-      for(k = 0; k < gridSize * gridSize -1; ++k)
-      {
-        if(grid[k].dom == NULL)
-          printf("Domaine de %d vaut null\n", k);
-      }
+      if(indice == 8){
+        for(k = 0; k < gridSize * gridSize -1; ++k)
+        {
+          printf("Domaine de %d\n", k);     
+          printDomaine(grid[k].dom);
+        }
+      }     
 
       if(grid[indice].canChange == true)
           noeud++;
@@ -312,12 +290,13 @@ int changerDomaine() {
       }  
 
       grid[indice].value = grid[indice].dom->value;
+      printf("Je suis %d\n", indice);
       printf("J'ai placé la valeur %d \n", grid[indice].value);
       
       /* Pas de solution pour le moment */
       if(removeLineAndColumnDomain(indice, grid[indice].value) == false) {
       printf("retrait valeur Echec\n\n");
-      //   removeDomaine(grid[indice].dom, grid[indice].value);
+          // removeDomaine(grid[indice].dom, grid[indice].value);
           addLineAndColumnDomain(indice);
       }
       else {
@@ -362,6 +341,30 @@ int changerDomaine() {
 
   return -1;
 }
+
+int forwardChecking() {
+    int res = -1;
+    indice = 0;
+
+    while(res < 0) {
+        res = changerDomaine();
+
+        if(res == true) {
+            #ifndef DEBUG
+                //clearScreen();
+                printBeautifulGrid(COLOR_BLUE);
+            #endif
+            #ifdef DEBUG
+                printBeautifulGrid(COLOR_BLUE);
+                sleep(SLEEP_TIME);
+            #endif /* DEBUG */
+            return true;
+        }
+    }
+    return false;
+}
+
+
 
 /* Retourne -1 si aucune solution, dans le cas ou il existe une solution renvoie 1 */
 void resolveFutoshiki(int (*f)()) {
