@@ -12,7 +12,6 @@
 char* path;
 int indice = 0;
 int ligne = 0;
-unsigned long long noeud = 0;
 
 /***********************************************************************************************************************
 * FONCTION DE VERIFICATION
@@ -177,6 +176,7 @@ int changerDomaine() {
         color(COLOR_GREEN);
         printf ("\tSolution trouvée en %f !\n", getTimer());
         printf("\tNombre de noeuds parcouru %llu\n\n", noeud);
+        printf("Nombre de contrainte vérifiées %llu\n", nbTestContrainte);
         color(COLOR_WHITE);
         return true;
     }   
@@ -219,6 +219,7 @@ int changerDomaine() {
                     color(COLOR_RED);
                     printf ("\nPas de solution en %f\n", getTimer());
                     printf("Nombre de noeuds parcouru %llu\n\n", noeud);
+                    printf("Nombre de contrainte vérifiées %llu\n", nbTestContrainte);
                     color(COLOR_WHITE);
                     return false;   
                 }
@@ -236,6 +237,7 @@ int changerDomaine() {
         color(COLOR_RED);
         printf ("\nPas de solution en %f\n", getTimer());
         printf("Nombre de noeuds parcouru %llu\n\n", noeud);
+        printf("Nombre de contrainte vérifiées %llu\n", nbTestContrainte);
         color(COLOR_WHITE);
         return false;
     } 

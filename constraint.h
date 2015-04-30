@@ -59,6 +59,8 @@ int checkContrainte(Contrainte* c) {
     if(grid[c->v1].value == 0 || grid[c->v2].value == 0)
         return true;
 
+    nbTestContrainte++;
+    
     switch (c->contrainte)
     {
         case '<':

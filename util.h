@@ -34,6 +34,9 @@ void logOnStop(int signal) {
 * VARIABLE GLOBAL DIVERS
 ***********************************************************************************************************************/
 
+unsigned long long noeud = 0;
+unsigned long long nbTestContrainte = 0;
+
 typedef struct {
     int value;
     int canChange;

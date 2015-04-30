@@ -98,6 +98,9 @@ void writeGrid(char* buff) {
     printf("OK\n");
     color(COLOR_WHITE);
 
+    printf("Nombre de noeuds parcouru %llu\n", noeud);
+    printf("Nombre de contrainte vérifiées %llu\n", nbTestContrainte);
+
     printBeautifulGrid(COLOR_GREEN);
     exit(0);
 }
