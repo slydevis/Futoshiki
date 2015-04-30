@@ -106,7 +106,8 @@ int changerValeur() {
                     else {
                         color(COLOR_RED);
                         printf ("\nPas de solution : %f\n", getTimer());
-                        printf("Nombre de noeuds parcouru %llu\n\n", noeud);
+                        printf("Nombre de noeuds parcouru %llu\n", noeud);
+                        printf("Nombre de contrainte vérifiées %llu\n", nbTestContrainte);
                         color(COLOR_WHITE);
                         return false;
                     }
@@ -116,7 +117,8 @@ int changerValeur() {
                 stopChrono();
                 color(COLOR_RED);
                 printf ("\nPas de solution en %f\n", getTimer());
-                printf("Nombre de noeuds parcouru %llu\n\n", noeud);
+                printf("Nombre de noeuds parcouru %llu\n", noeud);
+                printf("Nombre de contrainte vérifiées %llu\n", nbTestContrainte);
                 color(COLOR_WHITE);
                 return false;
             }
@@ -130,7 +132,8 @@ int changerValeur() {
         stopChrono();
         color(COLOR_GREEN);
         printf ("\tSolution trouvée en %f !\n", getTimer());
-        printf("\tNombre de noeuds parcouru %llu\n\n", noeud);
+        printf("\tNombre de noeuds parcouru %llu\n", noeud);
+        printf("Nombre de contrainte vérifiées %llu\n", nbTestContrainte);
         color(COLOR_WHITE);
         return true;
     }
