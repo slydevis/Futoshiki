@@ -107,8 +107,10 @@ Domaine initDomaine(Domaine dom, int value) {
 
 void printDomaine(Domaine dom) {
 
-    if(dom == NULL)
+    if(dom == NULL) {
+        printf("Le domaine est NULL\n");
         return;
+    }
 
     Domaine list = dom;
 
