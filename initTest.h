@@ -124,8 +124,6 @@ void initCheckFutoTest8() {
     grid[2*gridSize].value = 2;
 }
 
-// TODO : Faire un test plus propre et valable pour toutes les tailles de grille
-// Fonctionnel juste pour une grille de 6x6 pour l'instant
 void initCheckFutoTest9() {
 
 /*
@@ -179,5 +177,46 @@ void initBacktrackTest2() {
 
 void initTestDomaine() {
     resetAll();
+}
+
+void initDomaineTest() {
+    resetAll();
+
+    for(int i = 0; i < 2; ++i)
+        grid[i].dom = initDomaine(grid[i].dom, i);
+
+    for(int i = 0; i < 2; ++i)
+        printDomaine(grid[i].dom);
+
+    printf("\n");
+}
+
+void removeDomaineTest() {
+    resetAll();
+
+    for(int i = 0; i < 2; ++i)
+        grid[i].dom = initDomaine(grid[i].dom, i);
+
+    for(int i = 0; i < gridSize; ++i)
+        grid[0].dom = removeDomaine(grid[0].dom, i + 1);
+
+    for(int i = 0; i < 2; ++i)
+        printDomaine(grid[i].dom);
+}
+
+void addDomaineTest() {
+        resetAll();
+
+    for(int i = 0; i < 2; ++i)
+        grid[i].dom = initDomaine(grid[i].dom, i);
+
+    for(int i = 0; i < gridSize; ++i)
+        grid[0].dom = removeDomaine(grid[0].dom, i + 1);
+
+    for(int i = 0; i < 2; ++i)
+        grid[0].dom = addDomaine(grid[0].dom, i + 1);
+
+    for(int i = 0; i < 2; ++i)
+        printDomaine(grid[i].dom);
 }
 #endif /* __INITTEST_H__ */

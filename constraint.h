@@ -8,9 +8,8 @@ int posContrainte = 0;
 /* Met a jour la taille du tableau et ajoute la nouvelle contrainte */
 void majContrainte (Contrainte contrainte) {
 
-    if(tabContrainte == NULL) {
+    if(tabContrainte == NULL)
         tabContrainte = calloc(1, sizeof(Contrainte));
-    }
 
     Contrainte* tabContrainteSave = NULL;
     tabContrainteSave = malloc(sizeof(struct Contrainte) * tailleTabContrainte);
@@ -48,17 +47,17 @@ Contrainte initContrainte(int a, int b, char c) {
 }
 
 /* Adapte la taille du tableau a l'ajout d'une nouvelle contrainte */
-void addContrainte (int a, int b, char c)
-{
+void addContrainte (int a, int b, char c) {
     Contrainte contrainte;
     contrainte = initContrainte(a, b, c);
     majContrainte(contrainte);
 }
 
 /* Renvoie le résultat de la vérification de contrainte */
-int checkContrainte(Contrainte* c)
-{
-    if(grid[c->v1].value == 0 || grid[c->v2].value == 0) return true;
+int checkContrainte(Contrainte* c) {
+
+    if(grid[c->v1].value == 0 || grid[c->v2].value == 0)
+        return true;
 
     switch (c->contrainte)
     {

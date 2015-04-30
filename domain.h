@@ -24,14 +24,12 @@ Domaine addDomaine(Domaine dom, int value) {
         newElement->next = NULL;
     }
 
-    if(dom == NULL) {
+    if(dom == NULL)
         return newElement;
-    }
 
     Domaine list = dom;
-    while(list->next != NULL) {
+    while(list->next != NULL)
         list = list->next;
-    }
 
     list->next = newElement;
 
@@ -76,6 +74,7 @@ Domaine removeDomaine(Domaine dom, int value) {
 
         if(current->next == NULL)
             break;
+
         previous = current;
         current = current->next;
         ++i;
@@ -98,9 +97,8 @@ Domaine initDomaine(Domaine dom, int value) {
         return dom;
     }
 
-    for (int i = 1; i <= gridSize; ++i) {
+    for (int i = 1; i <= gridSize; ++i)
         dom = addDomaine(dom, i);
-    }
 
     return dom;
 }
@@ -108,7 +106,9 @@ Domaine initDomaine(Domaine dom, int value) {
 void printDomaine(Domaine dom) {
 
     if(dom == NULL) {
+        printf("==============>\n");
         printf("Le domaine est NULL\n");
+        printf("==============>\n");
         return;
     }
 

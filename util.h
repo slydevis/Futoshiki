@@ -22,18 +22,6 @@
 #define true 1
 #define false 0
 
-clock_t debut;
-clock_t fin;
-
-struct Contrainte* tabContrainte = NULL;
-int tailleTabContrainte = 0;
-
-typedef struct Contrainte{
-    int v1, v2;
-    char contrainte;
-} Contrainte;
-
-
 void writeGrid(char* path);
 
 // Handler if SIGINT
@@ -41,16 +29,6 @@ void logOnStop(int signal) {
     if(signal == SIGINT)
         writeGrid("save");
 }
-
-/***********************************************************************************************************************
-* CHRONO
-***********************************************************************************************************************/
-
-void startChrono() { debut = clock(); }
-
-void stopChrono() { fin = clock(); }
-
-float getTimer() { return (fin - debut)*1.0/CLOCKS_PER_SEC; }
 
 /***********************************************************************************************************************
 * VARIABLE GLOBAL DIVERS
@@ -64,6 +42,27 @@ typedef struct {
 
 int_t grid[MAX_SIZE * MAX_SIZE];
 int gridSize = 0;
+
+clock_t debut;
+clock_t fin;
+
+struct Contrainte* tabContrainte = NULL;
+int tailleTabContrainte = 0;
+
+typedef struct Contrainte{
+    int v1, v2;
+    char contrainte;
+} Contrainte;
+
+/***********************************************************************************************************************
+* CHRONO
+***********************************************************************************************************************/
+
+void startChrono() { debut = clock(); }
+
+void stopChrono() { fin = clock(); }
+
+float getTimer() { return (fin - debut)*1.0/CLOCKS_PER_SEC; }
 
 /***********************************************************************************************************************
 * TEST UNITAIRE
@@ -101,15 +100,42 @@ void runTestWithIntArg(int (*f)(int), void (*init)(), int result, int arg) {
         color(COLOR_WHITE);
     }
     else {
-        printf("\n");
         color(COLOR_RED);
         printf("Fail\n");
         color(COLOR_WHITE);
         exit(-1);
     }
 }
+
+void runTestStructDomain(void (*init)(), int tailleTest, int res) {
+    (*init)();
+
+    int r = true;
+
+    for(int i = 0; i < tailleTest; ++i) {
+        if(grid[i].dom == NULL) {
+            printf("OK\n");
+            r = false;
+        }
+    }
+
+    printf("Run Test : ");
+
+    if(r == res) {
+        color(COLOR_GREEN);
+        printf("OK\n\n");
+        color(COLOR_WHITE);
+    }
+    else {
+        color(COLOR_RED);
+        printf("Fail\n\n");
+        color(COLOR_WHITE);
+        exit(-1);
+    }
+}
+
 /***********************************************************************************************************************
-* FONCTION D'AFFICHAGE
+* FONCTIONS D'AFFICHAGE
 ***********************************************************************************************************************/
 
 /* Affiche la grille */
@@ -155,27 +181,42 @@ void printBeautifulGrid(char* gridColor) {
     printf("\n");
 }
 
+/***********************************************************************************************************************
+* FONCTION UTIL
+***********************************************************************************************************************/
+
+/* Efface la console sous linux */
+void clearScreen() { printf("\033[H\033[2J"); }
+
+/***********************************************************************************************************************
+* FONCTIONS DE MANIPULATION DES STRUCTURES
+***********************************************************************************************************************/
+
 int removeDomain(int v1, int v2, char contrainte) {
     switch(contrainte) {
         case '<' :
         case '^' :
         if(grid[v1].value == 0 && grid[v2].value == 0) {
             grid[v1].dom = removeDomaine(grid[v1].dom, gridSize);
-            // printf("J'enleve sur %d la valeur %d %d\n", v1, gridSize, __LINE__);
             grid[v2].dom = removeDomaine(grid[v2].dom, 1);
-            // printf("J'enleve sur %d la valeur %d %d\n", v2, 1, __LINE__);
+            #ifdef VERBOSE
+                printf("Suppression de %d sur grid[%d] (ligne %d)", gridSize, v1, __LINE__);
+                printf("Suppression de %d sur grid[%d] (ligne %d)", 1, v2, __LINE__);
+            #endif /* VERBOSE */
             return true;
         }
 
         if(grid[v1].value != 0 && grid[v2].value != 0)
             return false;
 
-
         if(grid[v1].value == 0) {
             for(int i = grid[v2].value; i < gridSize + 1; ++i) {
                 Domaine dom = grid[v1].dom;
                 grid[v1].dom = removeDomaine(dom, i);
-                // printf("J'enleve sur %d la valeur %d %d\n", v1, i, __LINE__);
+
+                #ifdef VERBOSE
+                    printf("Suppression de %d sur grid[%d] (ligne %d)", i, v1, __LINE__);
+                #endif /* VERBOSE */
             }            
         }
 
@@ -183,7 +224,10 @@ int removeDomain(int v1, int v2, char contrainte) {
             for(int i = grid[v1].value; i > 0; --i) {
                 Domaine dom = grid[v2].dom;
                 grid[v2].dom = removeDomaine(dom, i);
-                // printf("J'enleve sur %d la valeur %d %d\n", v2, i, __LINE__);
+
+                #ifdef VERBOSE
+                    printf("Suppression de %d sur grid[%d] (ligne %d)", i, v2, __LINE__);
+                #endif /* VERBOSE */
             }
         }
 
@@ -193,8 +237,12 @@ int removeDomain(int v1, int v2, char contrainte) {
         if(grid[v1].value == 0 && grid[v2].value == 0) {
             grid[v1].dom = removeDomaine(grid[v1].dom, 1);
             grid[v2].dom = removeDomaine(grid[v2].dom, gridSize);
-            // printf("J'enleve sur %d la valeur %d %d\n", v1, 1, __LINE__);
-            // printf("J'enleve sur %d la valeur %d %d\n", v2, gridSize, __LINE__);
+
+            #ifdef VERBOSE
+                printf("Suppression de %d sur grid[%d] (ligne %d)", 1, v1, __LINE__);
+                printf("Suppression de %d sur grid[%d] (ligne %d)", gridSize, v2, __LINE__);
+            #endif /* VERBOSE */
+
             return true;
         }
             
@@ -205,7 +253,10 @@ int removeDomain(int v1, int v2, char contrainte) {
             for(int i = grid[v2].value; i > 0; --i) {
                 Domaine dom = grid[v1].dom;
                 grid[v1].dom = removeDomaine(dom, i);
-                // printf("J'enleve sur %d la valeur %d %d\n", v1, i, __LINE__);
+
+                #ifdef VERBOSE
+                    printf("Suppression de %d sur grid[%d] (ligne %d)", i, v1, __LINE__);
+                #endif /* VERBOSE */
             }
         }
 
@@ -213,7 +264,10 @@ int removeDomain(int v1, int v2, char contrainte) {
             for(int i = grid[v1].value; i < gridSize; ++i) {
                 Domaine dom = grid[v2].dom;
                 grid[v2].dom = removeDomaine(dom, i);
-                // printf("J'enleve sur %d la valeur %d %d\n", v2, i, __LINE__);
+
+                #ifdef VERBOSE
+                    printf("Suppression de %d sur grid[%d] (ligne %d)", i, v2, __LINE__);
+                #endif /* VERBOSE */
             }
         }
         return true;
@@ -261,29 +315,30 @@ void addLineAndColumnDomain(int indice) {
 }
 
 void removeUselessDomain() {
+
+    #ifdef VERBOSE
+        printf("===> INITIALISATION DES DOMAINES\n\n");
+    #endif /* VERBOSE */
+    
     for(int i = 0; i < tailleTabContrainte; ++i) {
-    //    printf("i == %d\n", i);
         removeDomain(tabContrainte[i].v1, tabContrainte[i].v2, tabContrainte[i].contrainte);
-     //   printf("%d ==>\n", tabContrainte[i].v1);
-     //   printDomaine(grid[tabContrainte[i].v1].dom);
-     //   printf("%d ==>\n", tabContrainte[i].v2);
-     //   printDomaine(grid[tabContrainte[i].v2].dom);
-     //   sleep(3);
+
+        #ifdef VERBOSE
+           printf("grid[%d].dom ==>\n", tabContrainte[i].v1);
+           printDomaine(grid[tabContrainte[i].v1].dom);
+           printf("grid[%d].dom ==>\n", tabContrainte[i].v2);
+           printDomaine(grid[tabContrainte[i].v2].dom);
+           sleep(SLEEP_TIME);
+        #endif
     }
     
     for(int i = 0; i < gridSize * gridSize; ++i) {
         Domaine dom = grid[i].dom;
-        if(dom != NULL && dom->next == NULL) {
+
+        if(dom != NULL && dom->next == NULL)
             removeLineAndColumnDomain(i, dom->value);
-        }
+
     }
 }
-
-/***********************************************************************************************************************
-* FONCTION UTIL
-***********************************************************************************************************************/
-
-/* Efface la console sous linux */
-void clearScreen() { printf("\033[H\033[2J"); }
 
 #endif /* __UTIL_H__ */
